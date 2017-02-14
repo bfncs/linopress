@@ -1,0 +1,21 @@
+.editorApp {
+    position: relative;
+    overflow: hidden;
+}
+
+.editorApp-editor,
+.editorApp-frontend {
+    width: 50%;
+    padding: 1em;
+    max-height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.editorApp-editor {
+    float: left;
+}
+
+.editorApp-frontend {
+    margin-left: 50%;
+}

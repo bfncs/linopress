@@ -1,0 +1,30 @@
+{
+  "title": "sipgate Developer",
+  "description": "Integrate telephony into everything!",
+  "children": [
+    {
+      "type": "stage",
+      "props": {
+        "title": "sipgate Developer",
+        "description": "Integrate telephony into everything!"
+      }
+    },
+    {
+      "type": "teaser",
+      "props": {
+        "children": [
+          {
+            "title": "Push API",
+            "description": "sipgate.io passes call meta data to your web server in real-time. Check out the official documentation.",
+            "reference": "https://www.sipgate.io/en/documentation"
+          },
+          {
+            "title": "REST API",
+            "description": "We build our applications using this API and we invite you to use it too. Check out our Endpoint Reference.",
+            "reference": "https://api.sipgate.com/doc/"
+          }
+        ]
+      }
+    }
+  ]
+}
