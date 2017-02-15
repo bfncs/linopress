@@ -2,11 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { update } from './redux/page';
 import Page from './components/Page';
-import content from '../content/index.json';
 
 class FrontendApp extends Component {
   componentWillMount() {
-    this.props.update(content);
+    const path = window.location.pathname;
+    const options = { mode: 'no-cors' };
+    fetch(`/api${path}`, options)
+      .then(res => res.json())
+      .then(json => this.props.update(json))
+      .catch(err => console.error(`Unable to parse content for "${path}".`, err))
   }
 
   render() {
