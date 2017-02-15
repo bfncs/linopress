@@ -1,5 +1,4 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -9,11 +8,11 @@ import './editor.css';
 
 injectTapEventPlugin();
 
-const EditorApp = ({ page: { children = [] } = {} }) => (
+const EditorApp = () => (
   <MuiThemeProvider>
     <div className="editorApp">
       <div className="editorApp-editor">
-        <Editor blocks={children} />
+        <Editor />
       </div>
       <div className="editorApp-frontend">
         <Frontend />
@@ -22,10 +21,4 @@ const EditorApp = ({ page: { children = [] } = {} }) => (
   </MuiThemeProvider>
 );
 
-EditorApp.propTypes = {
-  page: PropTypes.object,
-};
-
-export default connect(
-  (state) => ({ page: state })
-)(EditorApp);
+export default EditorApp;

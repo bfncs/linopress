@@ -19,12 +19,12 @@ const typeToComponent = (type) => {
 const Page = ({ blocks }) => (
   <div>
     {
-      blocks.map(({ type, key, props }) => {
+      blocks.map(({ type, id, props }) => {
         const Component = typeToComponent(type);
         if (!Component) {
           return null;
         }
-        return React.createElement(Component, { ...props, key });
+        return React.createElement(Component, { ...props, key: id });
       })
     }
   </div>

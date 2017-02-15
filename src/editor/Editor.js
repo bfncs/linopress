@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+
+import { updateBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
 
 const editors = {
@@ -15,14 +18,10 @@ const typeToComponent = (type) => {
   return editors[name];
 };
 
-const update = (nextState) => {
-  console.log({ nextState });
-};
-
-const Editor = ({ blocks }) => (
+const Editor = ({ blocks, update }) => (
   <div>
     {
-      blocks.map(({ type, key, props }) => {
+      blocks.map(({ type, id, props }) => {
         const EditorComponent = typeToComponent(type);
         if (!EditorComponent) {
           return null;
@@ -30,7 +29,7 @@ const Editor = ({ blocks }) => (
 
         return React.createElement(
           EditorComponent,
-          { ...props, key, update }
+          { ...props, update, id, key: id }
         );
       })
     }
@@ -44,6 +43,10 @@ Editor.propTypes = {
       props: React.object,
     })
   ),
+  update: PropTypes.func,
 };
 
-export default Editor;
+export default connect(
+  (state) => ({ blocks: state.children || [] }),
+  { update: updateBlock }
+)(Editor);
