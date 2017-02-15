@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 
 import { updateBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
+import TeaserEditor from '../components/TeaserEditor';
 
 const editors = {
   StageEditor,
+  TeaserEditor,
 };
 
 
