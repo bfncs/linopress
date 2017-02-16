@@ -1,11 +1,13 @@
 .editorApp {
     position: relative;
     overflow: hidden;
+    height: 100%;
 }
 
 .editorApp-editor,
 .editorApp-frontend {
     width: 50%;
+    min-height: 100%;
     padding: 1em;
     max-height: 100%;
     overflow-x: auto;
@@ -14,6 +16,7 @@
 
 .editorApp-editor {
     float: left;
+    box-shadow: 0 0 10px 0 lightslategray;
 }
 
 .editorApp-frontend {
