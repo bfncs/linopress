@@ -22,6 +22,14 @@ const typeToComponent = (type) => {
   return editors[name];
 };
 
+const sanitizePage = (page) => ({
+  ...page,
+  children: page.children.map(child => ({
+    type: child.type,
+    props: child.props,
+  })),
+});
+
 const savePage = (page) => {
   const path = window.location.pathname;
   const options = {
@@ -29,7 +37,7 @@ const savePage = (page) => {
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify(page),
+    body: JSON.stringify(sanitizePage(page)),
   };
   fetch(`/api${path}`, options)
     .then(() => console.log('Ok'))
