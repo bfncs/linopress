@@ -2,9 +2,9 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+import './editorApp.css';
 import Frontend from '../FrontendApp';
 import Editor from './Editor';
-import './editor.css';
 
 injectTapEventPlugin();
 

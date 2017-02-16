@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
 
+import './editor.css';
 import { updateBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
 import TeaserEditor from '../components/TeaserEditor';
@@ -20,35 +22,61 @@ const typeToComponent = (type) => {
   return editors[name];
 };
 
-const Editor = ({ blocks, update }) => (
-  <div>
-    {
-      blocks.map(({ type, id, props }) => {
-        const EditorComponent = typeToComponent(type);
-        if (!EditorComponent) {
-          return null;
-        }
+const savePage = (page) => {
+  const path = window.location.pathname;
+  const options = {
+    method: 'post',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(page),
+  };
+  fetch(`/api${path}`, options)
+    .then(() => console.log('Ok'))
+    .catch(err => console.error(`Unable to save content for "${path}".`, err))
+};
 
-        return React.createElement(
-          EditorComponent,
-          { ...props, update, id, key: id }
-        );
-      })
-    }
+const Editor = ({ page, update }) => (
+  <div className="editor">
+    <div className="editor-blocks">
+      {
+        page.children && page.children.map(({ type, id, props }) => {
+          const EditorComponent = typeToComponent(type);
+          if (!EditorComponent) {
+            return null;
+          }
+
+          return React.createElement(
+            EditorComponent,
+            { ...props, update, id, key: id }
+          );
+        })
+      }
+    </div>
+    <div className="editor-actions">
+      <RaisedButton
+        label="Save"
+        onTouchTap={() => savePage(page)}
+        primary
+        fullWidth
+      />
+    </div>
   </div>
 );
 
 Editor.propTypes = {
-  blocks: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.string,
-      props: React.object,
-    })
-  ),
+  page: PropTypes.shape({
+    blocks: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+        props: React.object,
+      })
+    ),
+  }),
   update: PropTypes.func,
 };
 
 export default connect(
-  (state) => ({ blocks: state.children || [] }),
+  (state) => ({ page: state }),
   { update: updateBlock }
 )(Editor);
