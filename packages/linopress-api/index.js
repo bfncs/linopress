@@ -51,7 +51,7 @@ app.post('/api*', jsonParser, (req, res) => {
 
   const debug = { body: req.body, path: filePath };
 
-  fs.writeFile(filePath, JSON.stringify(req.body), (err) => {
+  fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
     if (err) {
       throw err;
     }
