@@ -8,11 +8,13 @@ const StageEditor = ({ id, title, description, update }) => (
       floatingLabelText="Title"
       value={title}
       onChange={(e) => update(id, { title: e.target.value, description })}
+      fullWidth
     />
     <TextField
       floatingLabelText="Description"
       value={description}
       onChange={(e) => update(id, { title, description: e.target.value })}
+      fullWidth
     />
   </div>
 );
