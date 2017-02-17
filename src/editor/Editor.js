@@ -18,6 +18,19 @@ const editors = {
   TeaserEditor,
 };
 
+const mapStateToProps = (state) => ({
+  page: state.page,
+  dirty: state.editor.dirty,
+});
+
+const mapDispatchToProps = {
+  update: updateBlock,
+  append: appendBlock,
+  remove: removeBlock,
+  up: moveUpBlock,
+  down: moveDownBlock,
+};
+
 const typeToName = (type) => {
   return type.substr(0, 1).toUpperCase() + type.substr(1);
 };
@@ -53,7 +66,7 @@ const savePage = (page) => {
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };
 
-const Editor = ({ page, update, remove, up, down, append }) => (
+const Editor = ({ page, dirty, update, remove, up, down, append }) => (
   <div className="editor">
     <div className="editor-blocks">
       {
@@ -118,6 +131,7 @@ const Editor = ({ page, update, remove, up, down, append }) => (
         label="Save"
         onTouchTap={() => savePage(page)}
         className={'editorActions-btn'}
+        disabled={!dirty}
         primary
         fullWidth
       />
@@ -134,17 +148,12 @@ Editor.propTypes = {
       })
     ),
   }),
+  dirty: PropTypes.bool,
   update: PropTypes.func,
   append: PropTypes.func,
 };
 
 export default connect(
-  (state) => ({ page: state.page }),
-  {
-    update: updateBlock,
-    append: appendBlock,
-    remove: removeBlock,
-    up: moveUpBlock,
-    down: moveDownBlock,
-  }
+  mapStateToProps,
+  mapDispatchToProps
 )(Editor);
