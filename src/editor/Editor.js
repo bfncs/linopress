@@ -139,7 +139,7 @@ Editor.propTypes = {
 };
 
 export default connect(
-  (state) => ({ page: state }),
+  (state) => ({ page: state.page }),
   {
     update: updateBlock,
     append: appendBlock,

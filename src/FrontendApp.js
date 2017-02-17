@@ -28,7 +28,7 @@ FrontendApp.propTypes = {
 
 export default connect(
   (state) => ({
-    page: state,
+    page: state.page,
   }),
   { update }
 )(FrontendApp);
