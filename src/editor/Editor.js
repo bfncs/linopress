@@ -7,7 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import './editor.css';
-import { updateBlock } from '../redux/page';
+import { updateBlock, appendBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
 import TeaserEditor from '../components/TeaserEditor';
 
@@ -47,7 +47,7 @@ const savePage = (page) => {
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };
 
-const Editor = ({ page, update }) => (
+const Editor = ({ page, update, append }) => (
   <div className="editor">
     <div className="editor-blocks">
       {
@@ -75,7 +75,7 @@ const Editor = ({ page, update }) => (
               key={name}
               value={name}
               primaryText={name}
-              onTouchTap={() => console.log(`new ${name}`)}
+              onTouchTap={() => append(component.getEmpty())}
             />
           ))
         }
@@ -101,9 +101,10 @@ Editor.propTypes = {
     ),
   }),
   update: PropTypes.func,
+  append: PropTypes.func,
 };
 
 export default connect(
   (state) => ({ page: state }),
-  { update: updateBlock }
+  { update: updateBlock, append: appendBlock }
 )(Editor);

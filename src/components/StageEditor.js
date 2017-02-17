@@ -26,4 +26,12 @@ StageEditor.propTypes = {
   update: PropTypes.func.isRequired,
 };
 
+StageEditor.getEmpty = () => ({
+  type: 'stage',
+  props: {
+    title: '',
+    description: '',
+  },
+});
+
 export default StageEditor;

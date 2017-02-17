@@ -14,7 +14,7 @@ const setFieldValue = (stateChildren, reference, field, value) => {
   return { children };
 };
 
-const StageEditor = ({ id, update, children }) => (
+const TeaserEditor = ({ id, update, children }) => (
   <div>
     <h2>Teaser</h2>
     {children.map(({ title, description, reference}, index) => (
@@ -42,7 +42,7 @@ const StageEditor = ({ id, update, children }) => (
   </div>
 );
 
-StageEditor.propTypes = {
+TeaserEditor.propTypes = {
   id: PropTypes.string.isRequired,
   update: PropTypes.func.isRequired,
   children: PropTypes.arrayOf(
@@ -54,4 +54,17 @@ StageEditor.propTypes = {
   ),
 };
 
-export default StageEditor;
+TeaserEditor.getEmpty = () => ({
+  type: 'teaser',
+  props: {
+    children: [
+      {
+        title: '',
+        description: '',
+        reference: '',
+      },
+    ],
+  },
+});
+
+export default TeaserEditor;

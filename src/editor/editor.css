@@ -3,6 +3,10 @@
     margin: 1em 0;
 }
 
+.editor-actions {
+    text-align: center;
+}
+
 .editor-addMenu,
 .editorActions-btn {
     margin: .4em 0;
