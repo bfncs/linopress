@@ -9,7 +9,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import './editor.css';
-import { updateBlock, appendBlock, removeBlock } from '../redux/page';
+import { updateBlock, appendBlock, removeBlock, moveUpBlock, moveDownBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
 import TeaserEditor from '../components/TeaserEditor';
 
@@ -53,11 +53,11 @@ const savePage = (page) => {
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };
 
-const Editor = ({ page, update, remove, append }) => (
+const Editor = ({ page, update, remove, up, down, append }) => (
   <div className="editor">
     <div className="editor-blocks">
       {
-        page.children && page.children.map(({ type, id, props }) => {
+        page.children && page.children.map(({ type, id, props }, index) => {
           const EditorComponent = typeToComponent(type);
           if (!EditorComponent) {
             return null;
@@ -78,7 +78,20 @@ const Editor = ({ page, update, remove, append }) => (
                 }
               </CardText>
               <CardActions>
-                <FlatButton label="Remove" onTouchTap={() => remove(id)} />
+                <FlatButton
+                  label="Up"
+                  onTouchTap={() => up(id)}
+                  disabled={index === 0}
+                />
+                <FlatButton
+                  label="Down"
+                  onTouchTap={() => down(id)}
+                  disabled={index === page.children.length - 1}
+                />
+                <FlatButton
+                  label="Remove"
+                  onTouchTap={() => remove(id)}
+                />
               </CardActions>
             </Card>
           )
@@ -131,5 +144,7 @@ export default connect(
     update: updateBlock,
     append: appendBlock,
     remove: removeBlock,
+    up: moveUpBlock,
+    down: moveDownBlock,
   }
 )(Editor);
