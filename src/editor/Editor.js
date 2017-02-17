@@ -9,6 +9,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import './editor.css';
+import { clean } from '../redux/editor';
 import { updateBlock, appendBlock, removeBlock, moveUpBlock, moveDownBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
 import TeaserEditor from '../components/TeaserEditor';
@@ -24,6 +25,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  cleanState: clean,
   update: updateBlock,
   append: appendBlock,
   remove: removeBlock,
@@ -52,7 +54,7 @@ const sanitizePage = (page) => ({
   })),
 });
 
-const savePage = (page) => {
+const savePage = (page, onSuccess) => {
   const path = window.location.pathname;
   const options = {
     method: 'post',
@@ -62,11 +64,11 @@ const savePage = (page) => {
     body: JSON.stringify(sanitizePage(page)),
   };
   fetch(`/api${path}`, options)
-    .then(() => console.log('Ok'))
+    .then(() => onSuccess())
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };
 
-const Editor = ({ page, dirty, update, remove, up, down, append }) => (
+const Editor = ({ page, dirty, cleanState, update, remove, up, down, append }) => (
   <div className="editor">
     <div className="editor-blocks">
       {
@@ -129,7 +131,7 @@ const Editor = ({ page, dirty, update, remove, up, down, append }) => (
       </IconMenu>
       <RaisedButton
         label="Save"
-        onTouchTap={() => savePage(page)}
+        onTouchTap={() => savePage(page, cleanState)}
         className={'editorActions-btn'}
         disabled={!dirty}
         primary
@@ -149,6 +151,7 @@ Editor.propTypes = {
     ),
   }),
   dirty: PropTypes.bool,
+  cleanState: PropTypes.func,
   update: PropTypes.func,
   append: PropTypes.func,
 };

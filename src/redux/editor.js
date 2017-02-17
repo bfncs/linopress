@@ -7,12 +7,17 @@ import {
   PAGE_MOVE_DOWN_BLOCK,
 } from './page';
 
+export const EDITOR_CLEAN = 'EDITOR_CLEAN';
+
+export const clean = () => ({ type: EDITOR_CLEAN });
+
 const initialState = {
   dirty: false,
 };
 
 const editor = (state = initialState, action) => {
   switch (action.type) {
+    case EDITOR_CLEAN:
     case PAGE_UPDATE:
       return {
         ...state,
