@@ -1,6 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import MenuItem from 'material-ui/MenuItem';
+import IconMenu from 'material-ui/IconMenu';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import './editor.css';
 import { updateBlock } from '../redux/page';
@@ -11,7 +15,6 @@ const editors = {
   StageEditor,
   TeaserEditor,
 };
-
 
 const typeToComponent = (type) => {
   const name = type.substr(0, 1).toUpperCase() + type.substr(1) + 'Editor';
@@ -62,9 +65,25 @@ const Editor = ({ page, update }) => (
       }
     </div>
     <div className="editor-actions">
+      <IconMenu
+        iconButtonElement={<FloatingActionButton><ContentAdd /></FloatingActionButton>}
+        className="editor-addMenu"
+      >
+        {
+          Object.entries(editors).map(([name, component]) => (
+            <MenuItem
+              key={name}
+              value={name}
+              primaryText={name}
+              onTouchTap={() => console.log(`new ${name}`)}
+            />
+          ))
+        }
+      </IconMenu>
       <RaisedButton
         label="Save"
         onTouchTap={() => savePage(page)}
+        className={'editorActions-btn'}
         primary
         fullWidth
       />

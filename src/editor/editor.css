@@ -2,3 +2,8 @@
 .editor-actions {
     margin: 1em 0;
 }
+
+.editor-addMenu,
+.editorActions-btn {
+    margin: .4em 0;
+}
