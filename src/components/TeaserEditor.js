@@ -16,7 +16,6 @@ const setFieldValue = (stateChildren, reference, field, value) => {
 
 const TeaserEditor = ({ id, update, children }) => (
   <div>
-    <h2>Teaser</h2>
     {children.map(({ title, description, reference}, index) => (
       <div key={index}>
         <TextField

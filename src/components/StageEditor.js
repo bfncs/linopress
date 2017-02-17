@@ -1,9 +1,8 @@
 import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
-const StageEditor = ({ id, title, description, update }) => (
+const StageEditor = ({ id, update, title, description }) => (
   <div>
-    <h2>Stage</h2>
     <TextField
       floatingLabelText="Title"
       value={title}

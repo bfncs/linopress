@@ -1,13 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import MenuItem from 'material-ui/MenuItem';
 import IconMenu from 'material-ui/IconMenu';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import './editor.css';
-import { updateBlock, appendBlock } from '../redux/page';
+import { updateBlock, appendBlock, removeBlock } from '../redux/page';
 import StageEditor from '../components/StageEditor';
 import TeaserEditor from '../components/TeaserEditor';
 
@@ -16,8 +18,12 @@ const editors = {
   TeaserEditor,
 };
 
+const typeToName = (type) => {
+  return type.substr(0, 1).toUpperCase() + type.substr(1);
+};
+
 const typeToComponent = (type) => {
-  const name = type.substr(0, 1).toUpperCase() + type.substr(1) + 'Editor';
+  const name = typeToName(type) + 'Editor';
   if (!(name in editors)) {
     console.error(`Unable to find editor component for type "${type}"!`);
     return null;
@@ -47,7 +53,7 @@ const savePage = (page) => {
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };
 
-const Editor = ({ page, update, append }) => (
+const Editor = ({ page, update, remove, append }) => (
   <div className="editor">
     <div className="editor-blocks">
       {
@@ -57,10 +63,25 @@ const Editor = ({ page, update, append }) => (
             return null;
           }
 
-          return React.createElement(
-            EditorComponent,
-            { ...props, update, id, key: id }
-          );
+          return (
+            <Card
+              key={id}
+              className={'blockEditor'}
+            >
+              <CardHeader title={typeToName(type)} />
+              <CardText>
+                {
+                  React.createElement(
+                    EditorComponent,
+                    { ...props, update, remove, id }
+                  )
+                }
+              </CardText>
+              <CardActions>
+                <FlatButton label="Remove" onTouchTap={() => remove(id)} />
+              </CardActions>
+            </Card>
+          )
         })
       }
     </div>
@@ -106,5 +127,9 @@ Editor.propTypes = {
 
 export default connect(
   (state) => ({ page: state }),
-  { update: updateBlock, append: appendBlock }
+  {
+    update: updateBlock,
+    append: appendBlock,
+    remove: removeBlock,
+  }
 )(Editor);
