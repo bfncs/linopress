@@ -1,4 +1,5 @@
 import { hash, fauxHash } from '../utils/hash';
+import { withUpdated, withInsertedBefore, moveUp, moveDown } from '../utils/arrayHelpers';
 
 export const PAGE_UPDATE = 'PAGE_UPDATE';
 export const PAGE_UPDATE_META = 'PAGE_UPDATE_META';
@@ -61,38 +62,6 @@ const decorateWithRandomId = (obj) => ({
   id: fauxHash(),
 });
 
-const moveUp = (arr, select) => {
-  const pos = arr.findIndex(select);
-  if (pos <= 0) {
-    return arr;
-  }
-  return arr.map((el, idx) => {
-    if (idx === pos - 1) {
-      return arr[idx + 1];
-    } else if (idx === pos) {
-      return arr[idx - 1]
-    } else {
-      return el;
-    }
-  });
-};
-
-const moveDown = (arr, select) => {
-  const pos = arr.findIndex(select);
-  if (pos < -1 || pos >= arr.length - 1) {
-    return arr;
-  }
-  return arr.map((el, idx) => {
-    if (idx === pos + 1) {
-      return arr[idx - 1];
-    } else if (idx === pos) {
-      return arr[idx + 1]
-    } else {
-      return el;
-    }
-  });
-};
-
 const page = (state = {}, action) => {
   switch (action.type) {
     case PAGE_UPDATE:
@@ -112,41 +81,20 @@ const page = (state = {}, action) => {
     case PAGE_UPDATE_BLOCK:
       return {
         ...state,
-        children: state.children.map(child => (
-          child.id === action.id
-            ? {
-              ...child,
-              props: action.props,
-            }
-            : child
-        )),
+        children: withUpdated(
+          state.children,
+          child => child.id === action.id,
+          child => ({ ...child, props: action.props }),
+        ),
       };
 
     case PAGE_INSERT_BLOCK:
-      const reference = state.children.findIndex(child => child.id === action.id);
-
-      if (reference < 0) {
-        return state;
-      }
-
-      const newBlock = decorateWithRandomId(action.block);
-
-      if (reference === 0) {
-        return {
-          ...state,
-          children: [
-            newBlock,
-            ...state.children,
-          ],
-        }
-      }
-
       return {
         ...state,
-        children: [].concat(
-          state.children.slice(0, reference),
-          newBlock,
-          state.children.slice(reference, state.children.length),
+        children: withInsertedBefore(
+          state.children,
+          child => child.id === action.id,
+          decorateWithRandomId(action.block)
         ),
       };
 
