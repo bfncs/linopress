@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
-import { Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import editors from './blockEditors';
 import { updateBlock, removeBlock, moveUpBlock, moveDownBlock } from '../redux/page';
+import editors from './blockEditors';
+import EditorCard from './EditorCard';
 
 const mapDispatchToProps = {
   pageUpdateBlock: updateBlock,
@@ -18,9 +18,6 @@ const styles = StyleSheet.create({
   container: {
     margin: '1em 0',
   },
-  blockEditor: {
-    margin: '0 0 1.4em',
-  }
 });
 
 const typeToName = (type) => {
@@ -51,38 +48,38 @@ const EditorBlocks = ({
           return null;
         }
 
+        const actions = (
+          <div>
+            <FlatButton
+              label="Up"
+              onTouchTap={() => pageMoveBlockUp(id)}
+              disabled={index === 0}
+            />
+            <FlatButton
+              label="Down"
+              onTouchTap={() => pageMoveBlockDown(id)}
+              disabled={index === blocks.length - 1}
+            />
+            <FlatButton
+              label="Remove"
+              onTouchTap={() => pageRemoveBlock(id)}
+            />
+          </div>
+        );
         return (
-          <Card
+          <EditorCard
             key={id}
-            className={css(styles.blockEditor)}
+            title={`Block: ${typeToName(type)}`}
+            actions={actions}
           >
-            <CardHeader title={`Block: ${typeToName(type)}`} />
-            <CardText>
-              {
-                React.createElement(
-                  EditorComponent,
-                  { ...props, update: pageUpdateBlock, remove: pageRemoveBlock, id }
-                )
-              }
-            </CardText>
-            <CardActions>
-              <FlatButton
-                label="Up"
-                onTouchTap={() => pageMoveBlockUp(id)}
-                disabled={index === 0}
-              />
-              <FlatButton
-                label="Down"
-                onTouchTap={() => pageMoveBlockDown(id)}
-                disabled={index === blocks.length - 1}
-              />
-              <FlatButton
-                label="Remove"
-                onTouchTap={() => pageRemoveBlock(id)}
-              />
-            </CardActions>
-          </Card>
-        )
+            <EditorComponent
+              {...props}
+              update={pageUpdateBlock}
+              remove={pageRemoveBlock}
+              id={id}
+            />
+          </EditorCard>
+        );
       })
     }
   </div>
