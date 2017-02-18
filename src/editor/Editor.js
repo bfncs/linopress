@@ -10,11 +10,20 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import './editor.css';
 import { clean } from '../redux/editor';
-import { updateBlock, appendBlock, removeBlock, moveUpBlock, moveDownBlock } from '../redux/page';
+import {
+  updateMeta,
+  updateBlock,
+  appendBlock,
+  removeBlock,
+  moveUpBlock,
+  moveDownBlock
+} from '../redux/page';
+import PageEditor from '../components/PageEditor';
 import StageEditor from '../components/StageEditor';
 import TeaserEditor from '../components/TeaserEditor';
 
 const editors = {
+  PageEditor,
   StageEditor,
   TeaserEditor,
 };
@@ -26,11 +35,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   cleanState: clean,
-  update: updateBlock,
-  append: appendBlock,
-  remove: removeBlock,
-  up: moveUpBlock,
-  down: moveDownBlock,
+  pageUpdateBlock: updateBlock,
+  pageUpdateMeta: updateMeta,
+  pageAppendBlock: appendBlock,
+  pageRemoveBlock: removeBlock,
+  pageMoveBlockUp: moveUpBlock,
+  pageMoveBlockDown: moveDownBlock,
 };
 
 const typeToName = (type) => {
@@ -68,8 +78,24 @@ const savePage = (page, onSuccess) => {
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };
 
-const Editor = ({ page, dirty, cleanState, update, remove, up, down, append }) => (
+const Editor = ({
+  page,
+  dirty,
+  cleanState,
+  pageUpdateMeta,
+  pageUpdateBlock,
+  pageAppendBlock,
+  pageRemoveBlock,
+  pageMoveBlockUp,
+  pageMoveBlockDown,
+}) => (
   <div className="editor">
+    <Card className={'blockEditor'}>
+      <CardHeader title={'Page'} />
+      <CardText>
+        <PageEditor update={pageUpdateMeta} {...page} />
+      </CardText>
+    </Card>
     <div className="editor-blocks">
       {
         page.children && page.children.map(({ type, id, props }, index) => {
@@ -83,29 +109,29 @@ const Editor = ({ page, dirty, cleanState, update, remove, up, down, append }) =
               key={id}
               className={'blockEditor'}
             >
-              <CardHeader title={typeToName(type)} />
+              <CardHeader title={`Block: ${typeToName(type)}`} />
               <CardText>
                 {
                   React.createElement(
                     EditorComponent,
-                    { ...props, update, remove, id }
+                    { ...props, update: pageUpdateBlock, remove: pageRemoveBlock, id }
                   )
                 }
               </CardText>
               <CardActions>
                 <FlatButton
                   label="Up"
-                  onTouchTap={() => up(id)}
+                  onTouchTap={() => pageMoveBlockUp(id)}
                   disabled={index === 0}
                 />
                 <FlatButton
                   label="Down"
-                  onTouchTap={() => down(id)}
+                  onTouchTap={() => pageMoveBlockDown(id)}
                   disabled={index === page.children.length - 1}
                 />
                 <FlatButton
                   label="Remove"
-                  onTouchTap={() => remove(id)}
+                  onTouchTap={() => pageRemoveBlock(id)}
                 />
               </CardActions>
             </Card>
@@ -124,7 +150,7 @@ const Editor = ({ page, dirty, cleanState, update, remove, up, down, append }) =
               key={name}
               value={name}
               primaryText={name}
-              onTouchTap={() => append(component.getEmpty())}
+              onTouchTap={() => pageAppendBlock(component.getEmpty())}
             />
           ))
         }
@@ -152,8 +178,12 @@ Editor.propTypes = {
   }),
   dirty: PropTypes.bool,
   cleanState: PropTypes.func,
-  update: PropTypes.func,
-  append: PropTypes.func,
+  pageUpdateMeta: PropTypes.func,
+  pageUpdateBlock: PropTypes.func,
+  pageAppendBlock: PropTypes.func,
+  pageRemoveBlock: PropTypes.func,
+  pageMoveBlockUp: PropTypes.func,
+  pageMoveBlockDown: PropTypes.func,
 };
 
 export default connect(

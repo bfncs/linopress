@@ -1,6 +1,7 @@
 import murmurhash from 'murmurhash';
 
 export const PAGE_UPDATE = 'PAGE_UPDATE';
+export const PAGE_UPDATE_META = 'PAGE_UPDATE_META';
 export const PAGE_UPDATE_BLOCK = 'PAGE_UPDATE_BLOCK';
 export const PAGE_APPEND_BLOCK = 'PAGE_APPEND_BLOCK';
 export const PAGE_REMOVE_BLOCK = 'PAGE_REMOVE_BLOCK';
@@ -10,6 +11,11 @@ export const PAGE_MOVE_DOWN_BLOCK = 'PAGE_MOVE_DOWN_BLOCK';
 export const update = (page) => ({
   type: PAGE_UPDATE,
   page,
+});
+
+export const updateMeta = (props) => ({
+  type: PAGE_UPDATE_META,
+  props,
 });
 
 export const updateBlock = (id, props) => ({
@@ -86,6 +92,13 @@ const page = (state = {}, action) => {
       return {
         ...page,
         children: page.children.map(decorateWithId),
+      };
+
+    case PAGE_UPDATE_META:
+      return {
+        ...state,
+        ...action.props,
+        children: state.children,
       };
 
     case PAGE_UPDATE_BLOCK:
