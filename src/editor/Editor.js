@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { StyleSheet, css } from 'aphrodite';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
 import EditorBlocks from './EditorBlocks';
 import EditorActions from './EditorActions';
 
-import './editor.css';
 import { updateMeta } from '../redux/page';
 import PageEditor from '../components/PageEditor';
 
@@ -16,12 +16,18 @@ const mapDispatchToProps = {
   pageUpdateMeta: updateMeta,
 };
 
+const styles = StyleSheet.create({
+  blockEditor: {
+    margin: '0 0 1.4em',
+  }
+});
+
 const Editor = ({
   page,
   pageUpdateMeta,
 }) => (
-  <div className="editor">
-    <Card className={'blockEditor'}>
+  <div>
+    <Card className={css(styles.blockEditor)}>
       <CardHeader title={'Page'} />
       <CardText>
         <PageEditor update={pageUpdateMeta} {...page} />

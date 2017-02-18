@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { StyleSheet, css } from 'aphrodite';
 import { Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import './editor.css';
 import editors from './blockEditors';
 import { updateBlock, removeBlock, moveUpBlock, moveDownBlock } from '../redux/page';
 
@@ -13,6 +13,15 @@ const mapDispatchToProps = {
   pageMoveBlockUp: moveUpBlock,
   pageMoveBlockDown: moveDownBlock,
 };
+
+const styles = StyleSheet.create({
+  container: {
+    margin: '1em 0',
+  },
+  blockEditor: {
+    margin: '0 0 1.4em',
+  }
+});
 
 const typeToName = (type) => {
   return type.substr(0, 1).toUpperCase() + type.substr(1);
@@ -34,7 +43,7 @@ const EditorBlocks = ({
   pageMoveBlockUp,
   pageMoveBlockDown,
 }) => (
-  <div className="editor-blocks">
+  <div className={css(styles.container)}>
     {
       blocks && blocks.map(({ type, id, props }, index) => {
         const EditorComponent = typeToComponent(type);
@@ -45,7 +54,7 @@ const EditorBlocks = ({
         return (
           <Card
             key={id}
-            className={'blockEditor'}
+            className={css(styles.blockEditor)}
           >
             <CardHeader title={`Block: ${typeToName(type)}`} />
             <CardText>
