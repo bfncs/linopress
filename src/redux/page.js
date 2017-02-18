@@ -1,7 +1,7 @@
 import { hash, fauxHash } from '../utils/hash';
 import { withUpdated, withInsertedBefore, moveUp, moveDown } from '../utils/arrayHelpers';
 
-export const PAGE_UPDATE = 'PAGE_UPDATE';
+export const PAGE_INIT = 'PAGE_INIT';
 export const PAGE_UPDATE_META = 'PAGE_UPDATE_META';
 export const PAGE_UPDATE_BLOCK = 'PAGE_UPDATE_BLOCK';
 export const PAGE_INSERT_BLOCK = 'PAGE_INSERT_BLOCK';
@@ -10,8 +10,8 @@ export const PAGE_REMOVE_BLOCK = 'PAGE_REMOVE_BLOCK';
 export const PAGE_MOVE_UP_BLOCK = 'PAGE_MOVE_UP_BLOCK';
 export const PAGE_MOVE_DOWN_BLOCK = 'PAGE_MOVE_DOWN_BLOCK';
 
-export const update = (page) => ({
-  type: PAGE_UPDATE,
+export const init = (page) => ({
+  type: PAGE_INIT,
   page,
 });
 
@@ -64,11 +64,11 @@ const decorateWithRandomId = (obj) => ({
 
 const page = (state = {}, action) => {
   switch (action.type) {
-    case PAGE_UPDATE:
-      const { page } = action;
+    case PAGE_INIT:
+      const { children = [], ...pageProps } = action.page;
       return {
-        ...page,
-        children: page.children.map(decorateWithId),
+        ...pageProps,
+        children: children.map(decorateWithId),
       };
 
     case PAGE_UPDATE_META:

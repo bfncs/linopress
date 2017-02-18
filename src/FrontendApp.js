@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { update } from './redux/page';
+import { init } from './redux/page';
 import Page from './components/Page';
 
 class FrontendApp extends Component {
@@ -9,7 +9,7 @@ class FrontendApp extends Component {
     const options = { mode: 'no-cors' };
     fetch(`/api${path}`, options)
       .then(res => res.json())
-      .then(json => this.props.update(json))
+      .then(json => this.props.initPage(json))
       .catch(err => console.error(`Unable to parse content for "${path}".`, err))
   }
 
@@ -23,12 +23,12 @@ class FrontendApp extends Component {
 
 FrontendApp.propTypes = {
   page: PropTypes.object,
-  update: PropTypes.func,
+  init: PropTypes.func,
 };
 
 export default connect(
   (state) => ({
     page: state.page,
   }),
-  { update }
+  { initPage: init }
 )(FrontendApp);

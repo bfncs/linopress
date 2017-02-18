@@ -1,5 +1,5 @@
 import {
-  PAGE_UPDATE,
+  PAGE_INIT,
   PAGE_UPDATE_META,
   PAGE_UPDATE_BLOCK,
   PAGE_INSERT_BLOCK,
@@ -20,7 +20,7 @@ const initialState = {
 const editor = (state = initialState, action) => {
   switch (action.type) {
     case EDITOR_CLEAN:
-    case PAGE_UPDATE:
+    case PAGE_INIT:
       return {
         ...state,
         dirty: false,
