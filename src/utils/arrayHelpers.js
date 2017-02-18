@@ -38,7 +38,7 @@ export const moveUp = (arr, select) => {
 
 export const moveDown = (arr, select) => {
   const pos = arr.findIndex(select);
-  if (pos < -1 || pos >= arr.length - 1) {
+  if (pos < 0 || pos >= arr.length - 1) {
     return arr;
   }
   return arr.map((el, idx) => {
