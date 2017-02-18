@@ -1,8 +1,9 @@
-import murmurhash from 'murmurhash';
+import { hash, fauxHash } from '../utils/hash';
 
 export const PAGE_UPDATE = 'PAGE_UPDATE';
 export const PAGE_UPDATE_META = 'PAGE_UPDATE_META';
 export const PAGE_UPDATE_BLOCK = 'PAGE_UPDATE_BLOCK';
+export const PAGE_INSERT_BLOCK = 'PAGE_INSERT_BLOCK';
 export const PAGE_APPEND_BLOCK = 'PAGE_APPEND_BLOCK';
 export const PAGE_REMOVE_BLOCK = 'PAGE_REMOVE_BLOCK';
 export const PAGE_MOVE_UP_BLOCK = 'PAGE_MOVE_UP_BLOCK';
@@ -22,6 +23,12 @@ export const updateBlock = (id, props) => ({
   type: PAGE_UPDATE_BLOCK,
   id,
   props,
+});
+
+export const insertBlockBefore = (id, block) => ({
+  type: PAGE_INSERT_BLOCK,
+  id,
+  block,
 });
 
 export const appendBlock = (block) => ({
@@ -44,13 +51,14 @@ export const moveDownBlock = (id) => ({
   id,
 });
 
-const hash = (obj) => (
-  murmurhash(JSON.stringify(obj)).toString()
-);
-
 const decorateWithId = (obj) => ({
   ...obj,
   id: hash(obj),
+});
+
+const decorateWithRandomId = (obj) => ({
+  ...obj,
+  id: fauxHash(),
 });
 
 const moveUp = (arr, select) => {
@@ -114,12 +122,40 @@ const page = (state = {}, action) => {
         )),
       };
 
+    case PAGE_INSERT_BLOCK:
+      const reference = state.children.findIndex(child => child.id === action.id);
+
+      if (reference < 0) {
+        return state;
+      }
+
+      const newBlock = decorateWithRandomId(action.block);
+
+      if (reference === 0) {
+        return {
+          ...state,
+          children: [
+            newBlock,
+            ...state.children,
+          ],
+        }
+      }
+
+      return {
+        ...state,
+        children: [].concat(
+          state.children.slice(0, reference),
+          newBlock,
+          state.children.slice(reference, state.children.length),
+        ),
+      };
+
     case PAGE_APPEND_BLOCK:
       return {
         ...state,
         children: [
           ...state.children,
-          decorateWithId(action.block),
+          decorateWithRandomId(action.block),
         ]
       };
 

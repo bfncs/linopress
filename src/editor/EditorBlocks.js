@@ -3,11 +3,21 @@ import { connect } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
 import FlatButton from 'material-ui/FlatButton';
 
-import { updateBlock, removeBlock, moveUpBlock, moveDownBlock } from '../redux/page';
+import {
+  insertBlockBefore,
+  appendBlock,
+  updateBlock,
+  removeBlock,
+  moveUpBlock,
+  moveDownBlock
+} from '../redux/page';
 import editors from './blockEditors';
 import EditorCard from './EditorCard';
+import NewBlockButtonMenu from './NewBlockButtonMenu';
 
 const mapDispatchToProps = {
+  pageInsertBlockBefore: insertBlockBefore,
+  pageAppendBlock: appendBlock,
   pageUpdateBlock: updateBlock,
   pageRemoveBlock: removeBlock,
   pageMoveBlockUp: moveUpBlock,
@@ -17,6 +27,10 @@ const mapDispatchToProps = {
 const styles = StyleSheet.create({
   container: {
     margin: '1em 0',
+  },
+  gap: {
+    margin: '1em 0',
+    textAlign: 'center',
   },
 });
 
@@ -35,6 +49,8 @@ const typeToComponent = (type) => {
 
 const EditorBlocks = ({
   blocks,
+  pageInsertBlockBefore,
+  pageAppendBlock,
   pageUpdateBlock,
   pageRemoveBlock,
   pageMoveBlockUp,
@@ -67,21 +83,32 @@ const EditorBlocks = ({
           </div>
         );
         return (
-          <EditorCard
-            key={id}
-            title={`Block: ${typeToName(type)}`}
-            actions={actions}
-          >
-            <EditorComponent
-              {...props}
-              update={pageUpdateBlock}
-              remove={pageRemoveBlock}
-              id={id}
-            />
-          </EditorCard>
+          <div key={id}>
+            <div className={css(styles.gap)}>
+              <NewBlockButtonMenu
+                createComponent={component => pageInsertBlockBefore(id, component)}
+              />
+            </div>
+            <EditorCard
+              title={`Block: ${typeToName(type)}`}
+              actions={actions}
+            >
+              <EditorComponent
+                {...props}
+                update={pageUpdateBlock}
+                remove={pageRemoveBlock}
+                id={id}
+              />
+            </EditorCard>
+          </div>
         );
       })
     }
+    <div className={css(styles.gap)}>
+      <NewBlockButtonMenu
+        createComponent={pageAppendBlock}
+      />
+    </div>
   </div>
 );
 
@@ -92,6 +119,8 @@ EditorBlocks.propTypes = {
       props: React.object,
     })
   ),
+  pageInsertBlockBefore: PropTypes.func,
+  pageAppendBlock: PropTypes.func,
   pageUpdateBlock: PropTypes.func,
   pageRemoveBlock: PropTypes.func,
   pageMoveBlockUp: PropTypes.func,

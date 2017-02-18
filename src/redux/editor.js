@@ -2,6 +2,7 @@ import {
   PAGE_UPDATE,
   PAGE_UPDATE_META,
   PAGE_UPDATE_BLOCK,
+  PAGE_INSERT_BLOCK,
   PAGE_APPEND_BLOCK,
   PAGE_REMOVE_BLOCK,
   PAGE_MOVE_UP_BLOCK,
@@ -27,6 +28,7 @@ const editor = (state = initialState, action) => {
 
     case PAGE_UPDATE_META:
     case PAGE_UPDATE_BLOCK:
+    case PAGE_INSERT_BLOCK:
     case PAGE_APPEND_BLOCK:
     case PAGE_REMOVE_BLOCK:
     case PAGE_MOVE_UP_BLOCK:

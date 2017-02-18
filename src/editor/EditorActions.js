@@ -1,13 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, css } from 'aphrodite';
-import MenuItem from 'material-ui/MenuItem';
-import IconMenu from 'material-ui/IconMenu';
 import RaisedButton from 'material-ui/RaisedButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 
-import editors from './blockEditors';
 import { clean } from '../redux/editor';
 import { appendBlock } from '../redux/page';
 
@@ -23,7 +18,7 @@ const mapDispatchToProps = {
 
 const styles = StyleSheet.create({
   container: {
-    textAlign: 'center',
+    margin: '3em 0',
   },
   button: {
     margin: '.4em 0',
@@ -59,23 +54,8 @@ const EditorActions = ({
   pageAppendBlock,
 }) => (
   <div className={css(styles.container)}>
-    <IconMenu
-      iconButtonElement={<FloatingActionButton><ContentAdd /></FloatingActionButton>}
-      className={css(styles.button)}
-    >
-      {
-        Object.entries(editors).map(([name, component]) => (
-          <MenuItem
-            key={name}
-            value={name}
-            primaryText={name}
-            onTouchTap={() => pageAppendBlock(component.getEmpty())}
-          />
-        ))
-      }
-    </IconMenu>
     <RaisedButton
-      label="Save"
+      label="Save page"
       onTouchTap={() => savePage(page, cleanState)}
       className={css(styles.button)}
       disabled={!dirty}
