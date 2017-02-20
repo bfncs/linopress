@@ -7,6 +7,11 @@ class FrontendApp extends Component {
   componentWillMount() {
     const path = window.location.pathname;
     const options = { mode: 'no-cors' };
+    
+    if (typeof fetch === 'undefined' || !fetch) {
+      return;
+    }
+
     fetch(`/api${path}/index.json`, options)
       .then(res => res.json())
       .then(json => this.props.initPage(json))
