@@ -20,7 +20,7 @@
     "start": "concurrently --kill-others \"react-scripts start\" \"npm start --prefix packages/linopress-api\"",
     "start:dev": "concurrently --kill-others \"react-scripts start\" \"npm run dev --prefix packages/linopress-api\"",
     "frontend": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp -r ./content ./build/api",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
