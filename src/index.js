@@ -5,18 +5,24 @@ import { Provider } from 'react-redux'
 import rootReducer from './redux/rootReducer';
 
 import Frontend from './FrontendApp';
-import Editor from './editor/EditorApp';
 import './index.css';
 
 const store = createStore(rootReducer);
 
-const App = process.env.NODE_ENV === "development"
-  ? Editor
-  : Frontend;
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+const renderApp = (Component) => (
+  ReactDOM.render(
+    <Provider store={store}>
+      <Component />
+    </Provider>,
+    document.getElementById('root')
+  )
 );
+
+if (process.env.NODE_ENV === "development") {
+  require.ensure([], (require) => {
+    const Editor = require('./editor/EditorApp').default;
+    renderApp(Editor);
+  });
+} else {
+  renderApp(Frontend);
+}
