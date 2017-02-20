@@ -7,7 +7,7 @@ class FrontendApp extends Component {
   componentWillMount() {
     const path = window.location.pathname;
     const options = { mode: 'no-cors' };
-    fetch(`/api${path}`, options)
+    fetch(`/api${path}/index.json`, options)
       .then(res => res.json())
       .then(json => this.props.initPage(json))
       .catch(err => console.error(`Unable to parse content for "${path}".`, err))
