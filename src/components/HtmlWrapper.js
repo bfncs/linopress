@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const HtmlWrapper = ({ children, state, head, scripts, stylesheets }) => {
+const HtmlWrapper = ({children, state, head, scripts, stylesheets, aphroditeCSS }) => {
   // eslint-disable-next-line react/no-danger
   const content = (<div id="root" dangerouslySetInnerHTML={{ __html: children }} />);
   const htmlAttributes = head.htmlAttributes.toComponent();
@@ -13,6 +13,7 @@ const HtmlWrapper = ({ children, state, head, scripts, stylesheets }) => {
       {head.title.toComponent()}
       {head.meta.toComponent()}
       {head.link.toComponent()}
+      <style data-aphrodite>{aphroditeCSS.content}</style>
       {
         stylesheets.map(path => (
           <link href={`/${path}`} rel="stylesheet" />
@@ -22,7 +23,10 @@ const HtmlWrapper = ({ children, state, head, scripts, stylesheets }) => {
     <body>
     { content }
     <script
-      dangerouslySetInnerHTML={{__html: `window.__PRELOADED_STATE__ = ${JSON.stringify(state).replace(/</g, '\\u003c')};`}}
+      dangerouslySetInnerHTML={{
+        __html: `window.__PRELOADED_STATE__ = ${JSON.stringify(state).replace(/</g, '\\u003c')};`
+        + `window.__PRELOADED_STYLES__ = ${JSON.stringify(aphroditeCSS.renderedClassNames)};`,
+      }}
     />
     {
       scripts.map(path => (
@@ -40,6 +44,10 @@ HtmlWrapper.propTypes = {
   head: PropTypes.object.isRequired,
   scripts: PropTypes.arrayOf(PropTypes.string),
   stylesheets: PropTypes.arrayOf(PropTypes.string),
+  aphroditeCSS: PropTypes.shape({
+    content: PropTypes.string,
+    renderedClassNames: PropTypes.object,
+  }),
 };
 
 export default HtmlWrapper;

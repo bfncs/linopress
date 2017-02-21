@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
+import { StyleSheet, StyleSheetServer } from 'aphrodite';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import rootReducer from './redux/rootReducer';
@@ -29,6 +30,9 @@ if (typeof document !== 'undefined') {
       renderApp(createApp(Editor));
     });
   } else {
+    StyleSheet.rehydrate(window.__PRELOADED_STYLES__);
+    delete window.__PRELOADED_STYLES__;
+
     const preloadedState = window.__PRELOADED_STATE__;
     delete window.__PRELOADED_STATE__;
 
@@ -46,7 +50,10 @@ export default (locals, callback) => {
   };
 
   const head = Helmet.rewind();
-  const content = ReactDOMServer.renderToString(createApp(Frontend, preloadedState));
+  const { html: content, css: aphroditeCSS} = StyleSheetServer.renderStatic(() => {
+    return ReactDOMServer.renderToString(createApp(Frontend, preloadedState))
+  });
+
   const assets = Object.keys(locals.webpackStats.compilation.assets);
   const stylesheets = assets.filter(value => value.match(/\.css$/));
   const scripts = assets.filter(value => value.match(/\.js$/));
@@ -57,6 +64,7 @@ export default (locals, callback) => {
       stylesheets={stylesheets}
       scripts={scripts}
       state={preloadedState}
+      aphroditeCSS={aphroditeCSS}
     >
       {content}
     </HtmlWrapper>
