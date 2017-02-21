@@ -4,7 +4,7 @@ Serverless simple CMS/Static Site Generator
 
 ## The plan
 
-### `npm run editor`
+### `npm start`
 
 * Node API
  * GET /sitemap
