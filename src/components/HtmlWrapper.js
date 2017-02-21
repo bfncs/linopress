@@ -24,7 +24,6 @@ const HtmlWrapper = ({ children, state, head, scripts, stylesheets }) => {
     <script
       dangerouslySetInnerHTML={{__html: `window.__PRELOADED_STATE__ = ${JSON.stringify(state).replace(/</g, '\\u003c')};`}}
     />
-    </script>
     {
       scripts.map(path => (
         <script src={`/${path}`} type="text/javascript"></script>
