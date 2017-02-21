@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   panel: {
     width: '50%',
     minHeight: '100%',
-    padding: '1em',
     maxHeight: '100%',
     overflowX: 'auto',
     overflowY: 'auto',
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
   editor: {
     float: 'left',
     boxShadow: '0 0 10px 0 lightslategray',
+    padding: '1em',
   },
   frontend: {
     marginLeft: '50%',
