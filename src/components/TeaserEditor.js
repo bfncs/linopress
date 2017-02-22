@@ -1,5 +1,25 @@
 import React, { PropTypes } from 'react';
+import { StyleSheet, css } from 'aphrodite';
+import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+
+const styles = StyleSheet.create({
+  blocksDivider: {
+    margin: '1em 0',
+  },
+  actionsContainer: {
+    padding: '.4em 0',
+    textAlign: 'center',
+  },
+});
+
+const getEmptyChild = () => ({
+  title: '',
+  description: '',
+  reference: '',
+});
 
 const setFieldValue = (stateChildren, reference, field, value) => {
   const children = stateChildren.map(item => {
@@ -36,8 +56,20 @@ const TeaserEditor = ({ id, update, children }) => (
           onChange={(e) => update(id, setFieldValue(children, reference, 'reference', e.target.value))}
           fullWidth
         />
+        <Divider className={css(styles.blocksDivider)} />
       </div>
     ))}
+    <div className={css(styles.actionsContainer)}>
+      <FloatingActionButton
+        title={'Add new entry here'}
+        onTouchTap={() => update(id, { children: [...children, getEmptyChild()] })}
+        secondary
+        mini
+      >
+        <ContentAdd />
+      </FloatingActionButton>
+      <Divider className={css(styles.blocksDivider)} />
+    </div>
   </div>
 );
 
@@ -56,13 +88,7 @@ TeaserEditor.propTypes = {
 TeaserEditor.getEmpty = () => ({
   type: 'teaser',
   props: {
-    children: [
-      {
-        title: '',
-        description: '',
-        reference: '',
-      },
-    ],
+    children: [getEmptyChild()],
   },
 });
 

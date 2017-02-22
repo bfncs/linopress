@@ -11,7 +11,6 @@ const NewBlockButtonMenu = ({ className, createComponent }) => (
     iconButtonElement={
       <FloatingActionButton
         title={'Add new block here'}
-        secondary
         mini
       >
         <ContentAdd />
