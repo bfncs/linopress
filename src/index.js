@@ -49,10 +49,10 @@ export default (locals, callback) => {
     page: locals.content[locals.path],
   };
 
-  const head = Helmet.rewind();
   const { html: content, css: aphroditeCSS} = StyleSheetServer.renderStatic(() => {
     return ReactDOMServer.renderToString(createApp(Frontend, preloadedState))
   });
+  const head = Helmet.rewind();
 
   const assets = Object.keys(locals.webpackStats.compilation.assets);
   const stylesheets = assets.filter(value => value.match(/\.css$/));
