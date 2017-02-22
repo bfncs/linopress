@@ -19,9 +19,17 @@ class FrontendApp extends Component {
   }
 
   render() {
-    const { children:blocks = [] } = this.props.page;
+    const {
+      title,
+      description,
+      children:blocks = [],
+    } = this.props.page;
     return (
-      <Page blocks={blocks} />
+      <Page
+        title={title}
+        description={description}
+        blocks={blocks}
+      />
     )
   }
 }

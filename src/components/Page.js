@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Stage from './Stage';
 import Teaser from './Teaser';
+import Helmet from 'react-helmet';
 
 const blocks = {
   Stage,
@@ -16,8 +17,14 @@ const typeToComponent = (type) => {
   return blocks[name];
 };
 
-const Page = ({ blocks }) => (
+const Page = ({ title, description, blocks }) => (
   <div>
+    <Helmet
+      title={title}
+      meta={[
+        {name: "description", content: description},
+      ]}
+    />
     {
       blocks.map(({ type, id, props }) => {
         const Component = typeToComponent(type);
@@ -31,6 +38,8 @@ const Page = ({ blocks }) => (
 );
 
 Page.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
   blocks: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.string,
