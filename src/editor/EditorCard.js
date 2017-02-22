@@ -12,7 +12,7 @@ const EditorCard = ({ title, children, actions }) => (
   <Card
     className={css(styles.blockEditor)}
   >
-    <CardHeader title={`Block: ${title}`}/>
+    <CardHeader title={title} />
     <CardText>
       {children}
     </CardText>
