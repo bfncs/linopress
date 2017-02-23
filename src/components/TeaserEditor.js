@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -55,6 +56,12 @@ const TeaserEditor = ({ id, update, children }) => (
           value={reference}
           onChange={(e) => update(id, setFieldValue(children, reference, 'reference', e.target.value))}
           fullWidth
+        />
+        <FlatButton
+          label="Remove block"
+          onTouchTap={() => update(id, {
+            children: children.filter((child, childPosition) => (childPosition !== index))
+          })}
         />
         <Divider className={css(styles.blocksDivider)} />
       </div>
