@@ -31,8 +31,8 @@ app.all('*', (req, res, next) => {
   next();
 });
 
-app.get('/api*', (req, res) => {
-  const requestedPath = req.path.replace(/^\/api\/?/, '/');
+app.get('/api/content*', (req, res) => {
+  const requestedPath = req.path.replace(/^\/api\/content\/?/, '/');
   res.sendFile(getFilePath(requestedPath), {}, (err) => {
     if (err) {
       res.status(404).send('Not Found');
@@ -40,13 +40,13 @@ app.get('/api*', (req, res) => {
   });
 });
 
-app.post('/api*', jsonParser, (req, res) => {
+app.post('/api/content*', jsonParser, (req, res) => {
   if (!req.body) {
     res.status(400).send('Bad Request');
     return;
   }
 
-  const requestedPath = req.path.replace(/^\/api\/?/, '/');
+  const requestedPath = req.path.replace(/^\/api\/content\/?/, '/');
   const filePath = getFilePath(requestedPath);
 
   const debug = { body: req.body, path: filePath };

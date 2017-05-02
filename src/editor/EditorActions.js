@@ -42,7 +42,7 @@ const savePage = (page, onSuccess) => {
     },
     body: JSON.stringify(sanitizePage(page)),
   };
-  fetch(`/api${path}`, options)
+  fetch(`/api/content${path}`, options)
     .then(() => onSuccess())
     .catch(err => console.error(`Unable to save content for "${path}".`, err))
 };

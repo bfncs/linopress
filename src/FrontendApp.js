@@ -12,7 +12,7 @@ class FrontendApp extends Component {
       return;
     }
 
-    fetch(`/api${path}/index.json`, options)
+    fetch(`/api/content${path}index.json`, options)
       .then(res => res.json())
       .then(json => this.props.initPage(json))
       .catch(err => console.error(`Unable to parse content for "${path}".`, err))
