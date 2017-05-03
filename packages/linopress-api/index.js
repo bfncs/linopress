@@ -57,6 +57,10 @@ app.post('/api/content*', jsonParser, (req, res) => {
   });
 });
 
+app.get('/api/schema', (req, res) => {
+  res.sendFile(path.resolve('./schema.json'));
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
     res.status(400).send('Bad Request');

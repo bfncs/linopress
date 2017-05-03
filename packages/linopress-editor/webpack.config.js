@@ -20,13 +20,19 @@ module.exports = {
             {
                 test: /\.json$/,
                 use: 'json-loader'
-            }
-        ]
+            },
+        ],
     },
     devServer: {
         contentBase: path.join(__dirname, "dist"),
         compress: true,
-        port: 9000
+        port: 3002,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3001',
+                secure: false
+            },
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({

@@ -62,8 +62,8 @@
     "redux": "^3.6.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"node scripts/start.js\" \"npm start --prefix packages/linopress-api\"",
-    "start:dev": "concurrently --kill-others \"node scripts/start.js\" \"npm run dev --prefix packages/linopress-api\"",
+    "start": "concurrently --kill-others \"node scripts/start.js\" \"npm start --prefix packages/linopress-api\" \"npm run start --prefix packages/linopress-editor\"",
+    "start:dev": "concurrently --kill-others \"node scripts/start.js\" \"npm run start:dev --prefix packages/linopress-api\" \"npm run start --prefix packages/linopress-editor\"",
     "frontend": "node scripts/start.js",
     "build": "node scripts/build.js && mkdir -p ./build/api && cp -r ./content ./build/api/",
     "test": "node scripts/test.js --env=jsdom"

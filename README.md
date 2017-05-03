@@ -4,8 +4,6 @@ Serverless simple CMS/Static Site Generator
 
 ## Todo
 
-* API can deliver scheme (statically)
-* Editor fetches scheme from API
 * Editor can save to document via API
 * Frontend polling for changes
 * API delivers sitemap
