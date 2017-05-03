@@ -4,7 +4,6 @@ Serverless simple CMS/Static Site Generator
 
 ## Todo
 
-* Editor can save to document via API
 * Editor saves on change
 * Frontend polls for changes
 * API delivers sitemap
