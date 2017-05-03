@@ -8,6 +8,9 @@ const path = window.location.pathname
     .replace(/\/$/, '');
 const pathContentUri = `/api/content/${path}/index.json`;
 
+const editorElement = document.getElementById('editor');
+const saveButtonElement = document.querySelector('[data-action="SAVE_DOCUMENT"]');
+
 function initEditor(domElement, schema, content) {
     const editor = new JSONEditor(
         domElement,
@@ -21,18 +24,18 @@ function initEditor(domElement, schema, content) {
         }
     );
 
-    document.querySelector('[data-action="SAVE_DOCUMENT"]')
-        .addEventListener('click',() => {
-            const document = editor.getValue();
-            savePage(
-                path,
-                document,
-                () => console.log('Saved document, yay!')
-            );
-        });
+    const saveDocument = () => {
+        saveButtonElement.disabled = true;
+        saveButtonElement.classList.remove('alert');
+        savePage(path, editor.getValue())
+            .catch(() => saveButtonElement.classList.add('alert'))
+            .then(() => saveButtonElement.disabled = false);
+    };
+    editor.on('change', saveDocument);
+    saveButtonElement.addEventListener('click',saveDocument);
 }
 
-function savePage (path, page, onSuccess) {
+function savePage (path, page) {
     const options = {
         method: 'post',
         headers: {
@@ -40,12 +43,8 @@ function savePage (path, page, onSuccess) {
         },
         body: JSON.stringify(page),
     };
-    fetch(`/api/content/${path}`, options)
-        .then(() => onSuccess())
-        .catch(err => console.error(`Unable to save content for "${path}".`, err))
-};
-
-const editorElement = document.getElementById('editor');
+    return fetch(`/api/content/${path}`, options);
+}
 
 const schemaPromise = fetch(`/api/schema/`)
     .then(res => res.json())
