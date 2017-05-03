@@ -2,6 +2,17 @@
 
 Serverless simple CMS/Static Site Generator
 
+## Todo
+
+* Remove old editor
+* API can deliver scheme (statically)
+* Editor fetches scheme from API
+* Editor can save to document via API
+* Frontend polling for changes
+* API delivers sitemap
+* Editor has frontend to show sitemap
+* Websockets for change messages
+
 ## The plan
 
 ### `npm start`
