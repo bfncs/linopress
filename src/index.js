@@ -24,12 +24,6 @@ const renderApp = (app) => (
 );
 
 if (typeof document !== 'undefined') {
-  if (process.env.NODE_ENV === "development") {
-    require.ensure([], (require) => {
-      const Editor = require('./editor/EditorApp').default;
-      renderApp(createApp(Editor));
-    });
-  } else {
     StyleSheet.rehydrate(window.__PRELOADED_STYLES__);
     delete window.__PRELOADED_STYLES__;
 
@@ -37,7 +31,6 @@ if (typeof document !== 'undefined') {
     delete window.__PRELOADED_STATE__;
 
     renderApp(createApp(Frontend, preloadedState));
-  }
 }
 
 export default (locals, callback) => {

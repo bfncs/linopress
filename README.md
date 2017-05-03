@@ -4,7 +4,6 @@ Serverless simple CMS/Static Site Generator
 
 ## Todo
 
-* Remove old editor
 * API can deliver scheme (statically)
 * Editor fetches scheme from API
 * Editor can save to document via API
