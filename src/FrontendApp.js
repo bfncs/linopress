@@ -5,14 +5,16 @@ import Page from './components/Page';
 
 class FrontendApp extends Component {
   componentWillMount() {
-    const path = window.location.pathname;
+    const path = window.location.pathname
+        .replace(/^\//, '')
+        .replace(/\/$/, '');
     const options = { mode: 'no-cors' };
     
     if (typeof fetch === 'undefined' || !fetch) {
       return;
     }
 
-    fetch(`/api/content${path}index.json`, options)
+    fetch(`/api/content/${path}/index.json`, options)
       .then(res => res.json())
       .then(json => this.props.initPage(json))
       .catch(err => console.error(`Unable to parse content for "${path}".`, err))
