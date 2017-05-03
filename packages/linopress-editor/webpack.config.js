@@ -5,7 +5,8 @@ module.exports = {
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
     devtool: "cheap-eval-source-map",
     module: {
@@ -27,6 +28,7 @@ module.exports = {
         contentBase: path.join(__dirname, "dist"),
         compress: true,
         port: 3002,
+        historyApiFallback: true,
         proxy: {
             '/api': {
                 target: 'http://localhost:3001',

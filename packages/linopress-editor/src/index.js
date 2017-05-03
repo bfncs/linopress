@@ -4,11 +4,12 @@ import schema from '../../linopress-api/schema.json';
 JSONEditor.defaults.theme = 'foundation5';
 JSONEditor.defaults.iconlib = 'fontawesome4';
 
-function initEditor(domElement, schema) {
+function initEditor(domElement, schema, content) {
     new JSONEditor(
         domElement,
         {
             schema,
+            startval: content,
             disable_collapse: true,
             disable_edit_json: true,
             disable_properties: true,
@@ -19,7 +20,19 @@ function initEditor(domElement, schema) {
 
 const editorElement = document.getElementById('editor');
 
-fetch(`/api/schema/`, { mode: 'no-cors' })
+const schemaPromise = fetch(`/api/schema/`)
     .then(res => res.json())
-    .then(json => initEditor(editorElement, json))
-    .catch(err => console.error(`Unable to get schema from API".`, err))
+    .catch(err => console.error(`Unable to get schema from API".`, err));
+
+const path = window.location.pathname
+    .replace(/^\//, '')
+    .replace(/\/$/, '');
+const pathContentUri = `/api/content/${path}/index.json`;
+const contentPromise = fetch(pathContentUri)
+    .then(res => res.json())
+    .catch(err => console.error(`Unable to get content for /${path} from API".`, err));
+
+Promise.all([schemaPromise, contentPromise])
+    .then(([schema, content]) => {
+        initEditor(editorElement, schema, content)
+    });
