@@ -4,13 +4,15 @@ Serverless simple CMS/Static Site Generator
 
 ## Todo
 
+* Editor fetches start value
 * Editor can save to document via API
-* Frontend polling for changes
+* Editor saves on change
+* Frontend polls for changes
 * API delivers sitemap
-* Editor has frontend to show sitemap
-* Websockets for change messages
+* Editor shows frontend to show sitemap
+* Frontend uses websockets to listen for change messages
 
-## The plan
+## The plan (well, kind of)
 
 ### `npm start`
 
