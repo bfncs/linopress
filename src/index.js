@@ -14,7 +14,7 @@ const createApp = (Component, preloadedState) => {
   const store = createStore(rootReducer, preloadedState);
   return (
     <Provider store={store}>
-      <Component />
+      <Component isDevelopment={process.env.NODE_ENV === "development"} />
     </Provider>
   );
 };
