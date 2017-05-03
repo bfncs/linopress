@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const app = express();
 const jsonParser = bodyParser.json();
@@ -48,8 +48,6 @@ app.post('/api/content*', jsonParser, (req, res) => {
 
   const requestedPath = req.path.replace(/^\/api\/content\/?/, '/');
   const filePath = getFilePath(requestedPath);
-
-  const debug = { body: req.body, path: filePath };
 
   fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
     if (err) {
