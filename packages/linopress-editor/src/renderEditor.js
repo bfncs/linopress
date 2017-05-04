@@ -20,6 +20,12 @@ const insertDomElements = (root) => {
     saveButtonElement.class = 'button';
     root.appendChild(saveButtonElement);
 
+    const homeButtonElement = document.createElement('a');
+    homeButtonElement.innerText = 'back';
+    homeButtonElement.href = '/';
+    homeButtonElement.className = 'button secondary';
+    root.appendChild(homeButtonElement);
+
     return { editorElement, saveButtonElement };
 }
 
