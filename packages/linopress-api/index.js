@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mkdirp = require('mkdirp');
 const jetpack = require('fs-jetpack');
 const generateSitemap = require('./lib/generateSitemap');
 
@@ -17,7 +18,7 @@ const includesDirectoryTraversal = (pathString) => (
 const addFilenameIfNoneProvided = (pathString, filename) => {
     const parsed = path.parse(pathString);
     return parsed.ext === ''
-        ? parsed.dir + parsed.base + '/' + filename
+        ? parsed.dir + '/' +  parsed.base + '/' + filename
         : pathString
 };
 
@@ -26,6 +27,13 @@ const getFilePath = (requestedPath) => (
         contentBasePath + addFilenameIfNoneProvided(requestedPath, 'index.json')
     )
 );
+
+const writeFile = (targetPath, contents, cb) => {
+    mkdirp(path.dirname(targetPath), (err) => {
+        if (err) return cb(err);
+        fs.writeFile(targetPath, contents, cb);
+    });
+};
 
 app.all('*', (req, res, next) => {
     if (includesDirectoryTraversal(req.path)) {
@@ -53,7 +61,7 @@ app.post('/api/content*', jsonParser, (req, res) => {
     const requestedPath = req.path.replace(/^\/api\/content\/?/, '/');
     const filePath = getFilePath(requestedPath);
 
-    fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
+    writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
         if (err) {
             throw err;
         }
@@ -64,29 +72,6 @@ app.post('/api/content*', jsonParser, (req, res) => {
 app.get('/api/schema', (req, res) => {
     res.sendFile(path.resolve('./schema.json'));
 });
-
-const target = {
-    name: '/',
-    editable: true,
-    children: [
-        {
-            name: 'foo',
-            editable: false,
-            children: [
-                {
-                    name: 'bar',
-                    editable: true,
-                    children: [],
-                }
-            ],
-        },
-        {
-            name: 'baz',
-            editable: true,
-            children: [],
-        }
-    ],
-};
 
 app.get('/api/sitemap', (req, res) => {
     jetpack.inspectTreeAsync(contentBasePath, { relativePath: true })

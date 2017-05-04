@@ -4,7 +4,6 @@ Serverless simple CMS/Static Site Generator
 
 ## Todo
 
-* Editor shows frontend to show sitemap
 * Editor can revert changes (tempfile)
 * Frontend uses websockets to listen for change messages
 
