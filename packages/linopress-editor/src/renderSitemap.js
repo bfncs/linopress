@@ -1,4 +1,4 @@
-const generateSitemap = (tree, parentPath = '') => {
+const generateSitemap = (tree, frontendBaseUrl, parentPath = '') => {
     const list = document.createElement('ul');
     tree
         .map((item) => {
@@ -10,14 +10,20 @@ const generateSitemap = (tree, parentPath = '') => {
             element.appendChild(name);
 
             if (item.isNode) {
-                const link = document.createElement('a');
-                link.innerText = '🖉';
-                link.href = `/editor${itemPath}`;
-                element.appendChild(link);
+                const viewLink = document.createElement('a');
+                viewLink.innerText = '👁';
+                viewLink.href = `${frontendBaseUrl}${itemPath}`;
+                viewLink.target = '_blank';
+                element.appendChild(viewLink);
+
+                const editLink = document.createElement('a');
+                editLink.innerText = '🖉';
+                editLink.href = `/editor${itemPath}`;
+                element.appendChild(editLink);
             }
 
             if (item.children) {
-                element.appendChild(generateSitemap(item.children, itemPath));
+                element.appendChild(generateSitemap(item.children, frontendBaseUrl, itemPath));
             }
 
             return element;
@@ -26,10 +32,10 @@ const generateSitemap = (tree, parentPath = '') => {
     return list;
 };
 
-export default (root) => {
+export default (root, frontendBaseUrl) => {
     fetch(`/api/sitemap/`)
         .then(res => res.json())
         .then((sitemap) => {
-            root.appendChild(generateSitemap([sitemap]));
+            root.appendChild(generateSitemap([sitemap], frontendBaseUrl));
         });
 }
