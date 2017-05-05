@@ -1,39 +1,35 @@
 # Linopress
 
-Serverless simple CMS/Static Site Generator
+Linopress is a static site generator based on [React](https://facebook.github.io/react/) components and [JSON Schema](http://json-schema.org/) with a local GUI to make editing easy.
 
-## Todo
+⚠ Use only with a truckload of salt, this is just an exploration of the concepts and utterly rough around the edges.
 
-* Editor can revert changes (tempfile)
-* Frontend uses websockets to listen for change messages
+## Install
 
-## The plan (well, kind of)
+Checkout this repository and install node dependencies:
 
-### `npm start`
+```
+git clone git@github.com:bfncs/linopress.git
+cd linopress
+npm install
+```
 
-* Node API
- * GET /sitemap
- * GET /content/path/to/content
-   * Page config object with array of pattern config objects
- * POST/PUt /content/path/to/content
-* React Frontend:
- * Open on sitemap tree view, edit button for every leaf, add button for adding leaf below
- * Render Editor and Content Side-by-Side (toggleable)
- * Page config object is saved as state
- * Ability to modify existing patterns and add new ones
- * Save to save to disk in project through API
-* Components & Entities
- * Pattern Components get pattern config as props and render component
- * Pattern Editor Components enable modification of a Pattern Component instance
- * Page Editor Components allow editing page metadata and define addable components
+## Edit
 
-### `npm run build`
-Normal static site generator. Each route (/sitemap) is rendered, config state is added to window object for rejuicing in the client. No client transitions between routes but hard reloads (maybe STATIC JSON GET API later).
+To start editing start up all components with `npm start`. This will fire up frontend and editor in your browser.
 
-### `git push`
+All content changes will be persisted to your filesystem in `content/`. If you want to edit react components or add new ones, do this in `src/components/` and change the JSON schema for the editor in `packages/linopress-api/schema.json` if needed.
 
-git push to deploy!
+## Build
 
-No complexity. Simple. Stupid. No versioning, no user & access management, no administration. But: hefty performance, rock solid security, beautiful editor & developer experience!
+Run `npm run build` to build a statically deployable rendering of your website into `build/`. 
 
-Next: I18N
+
+## Roadmap
+
+* Port editor to react application
+* Split actual content from generator, API and editor
+* Editor can revert changes (using a temporary file that has to be explicitly commited)
+* I18N of content
+* Frontend uses websockets to listen for change messages instead of polling
+* Drop [jdorn/json-editor](https://github.com/jdorn/json-editor) in favor of [mozilla-services/react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form) once [#52](https://github.com/mozilla-services/react-jsonschema-form/issues/52) is resolved
