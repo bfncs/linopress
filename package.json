@@ -69,6 +69,7 @@
     "build": "node scripts/build.js && mkdir -p ./build/api && cp -r ./content ./build/api/",
     "test": "node scripts/test.js --env=jsdom",
     "format": "prettier --single-quote --trailing-comma es5 --write \"{src,packages/linopress-api/src,packages/linopress-editor/src}/**/*.js\"",
+    "postinstall": "npm install --prefix packages/linopress-api && npm install --prefix packages/linopress-editor",
     "precommit": "lint-staged"
   },
   "proxy": "http://localhost:3001",
