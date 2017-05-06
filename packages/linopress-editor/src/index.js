@@ -1,14 +1,16 @@
-import renderSitemap from './renderSitemap';
-import renderEditor from './renderEditor';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider as StoreProvider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './redux';
+import App from './App';
+import './index.css';
 
-const pathName = window.location.pathname;
-const root = document.getElementById('root');
-const FRONTEND_BASE_URL = 'http://localhost:3000';
+const store = createStore(rootReducer);
 
-if (pathName === '/') {
-  renderSitemap(root, FRONTEND_BASE_URL);
-} else if (pathName.startsWith('/editor/')) {
-  renderEditor(root);
-} else {
-  window.location.pathname = '/';
-}
+ReactDOM.render(
+  <StoreProvider store={store}>
+    <App />
+  </StoreProvider>,
+  document.getElementById('root')
+);
