@@ -1,10 +1,8 @@
 import murmurhash from 'murmurhash';
 
-export const hash = (obj) => (
-  murmurhash(JSON.stringify(obj)).toString()
-);
+export const hash = obj => murmurhash(JSON.stringify(obj)).toString();
 
-const randomDigitString = (length) => {
+const randomDigitString = length => {
   let result = '';
   for (let i = 0; i < length; i++) {
     result += Math.floor(Math.random() * 10);
@@ -12,4 +10,4 @@ const randomDigitString = (length) => {
   return result;
 };
 
-export const fauxHash = () => (randomDigitString(9));
+export const fauxHash = () => randomDigitString(9);

@@ -1,6 +1,5 @@
-export const withUpdated = (arr, select, update) => (
-  arr.map(el => select(el) ? update(el) : el)
-);
+export const withUpdated = (arr, select, update) =>
+  arr.map(el => (select(el) ? update(el) : el));
 
 export const withInsertedBefore = (arr, selectBefore, element) => {
   const reference = arr.findIndex(selectBefore);
@@ -16,7 +15,7 @@ export const withInsertedBefore = (arr, selectBefore, element) => {
   return [].concat(
     arr.slice(0, reference),
     element,
-    arr.slice(reference, arr.length),
+    arr.slice(reference, arr.length)
   );
 };
 
@@ -29,7 +28,7 @@ export const moveUp = (arr, select) => {
     if (idx === pos - 1) {
       return arr[idx + 1];
     } else if (idx === pos) {
-      return arr[idx - 1]
+      return arr[idx - 1];
     } else {
       return el;
     }
@@ -45,7 +44,7 @@ export const moveDown = (arr, select) => {
     if (idx === pos + 1) {
       return arr[idx - 1];
     } else if (idx === pos) {
-      return arr[idx + 1]
+      return arr[idx + 1];
     } else {
       return el;
     }

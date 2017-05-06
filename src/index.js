@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { StyleSheet, StyleSheetServer } from 'aphrodite';
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import rootReducer from './redux/rootReducer';
 import HtmlWrapper from './components/HtmlWrapper';
 import Frontend from './FrontendApp';
@@ -14,23 +14,21 @@ const createApp = (Component, preloadedState) => {
   const store = createStore(rootReducer, preloadedState);
   return (
     <Provider store={store}>
-      <Component isDevelopment={process.env.NODE_ENV === "development"} />
+      <Component isDevelopment={process.env.NODE_ENV === 'development'} />
     </Provider>
   );
 };
 
-const renderApp = (app) => (
-  ReactDOM.render(app, document.getElementById('root'))
-);
+const renderApp = app => ReactDOM.render(app, document.getElementById('root'));
 
 if (typeof document !== 'undefined') {
-    StyleSheet.rehydrate(window.__PRELOADED_STYLES__);
-    delete window.__PRELOADED_STYLES__;
+  StyleSheet.rehydrate(window.__PRELOADED_STYLES__);
+  delete window.__PRELOADED_STYLES__;
 
-    const preloadedState = window.__PRELOADED_STATE__;
-    delete window.__PRELOADED_STATE__;
+  const preloadedState = window.__PRELOADED_STATE__;
+  delete window.__PRELOADED_STATE__;
 
-    renderApp(createApp(Frontend, preloadedState));
+  renderApp(createApp(Frontend, preloadedState));
 }
 
 export default (locals, callback) => {
@@ -42,8 +40,11 @@ export default (locals, callback) => {
     page: locals.content[locals.path],
   };
 
-  const { html: content, css: aphroditeCSS} = StyleSheetServer.renderStatic(() => {
-    return ReactDOMServer.renderToString(createApp(Frontend, preloadedState))
+  const {
+    html: content,
+    css: aphroditeCSS,
+  } = StyleSheetServer.renderStatic(() => {
+    return ReactDOMServer.renderToString(createApp(Frontend, preloadedState));
   });
   const head = Helmet.rewind();
 

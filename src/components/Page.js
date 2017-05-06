@@ -8,7 +8,7 @@ const blocks = {
   Teaser,
 };
 
-const typeToComponent = (type) => {
+const typeToComponent = type => {
   const name = type.substr(0, 1).toUpperCase() + type.substr(1);
   if (!(name in blocks)) {
     console.error(`Unable to find component for type "${type}"!`);
@@ -21,19 +21,15 @@ const Page = ({ title, description, blocks }) => (
   <div>
     <Helmet
       title={title}
-      meta={[
-        {name: "description", content: description},
-      ]}
+      meta={[{ name: 'description', content: description }]}
     />
-    {
-      blocks.map(({ type, id, props }) => {
-        const Component = typeToComponent(type);
-        if (!Component) {
-          return null;
-        }
-        return React.createElement(Component, { ...props, key: id });
-      })
-    }
+    {blocks.map(({ type, id, props }) => {
+      const Component = typeToComponent(type);
+      if (!Component) {
+        return null;
+      }
+      return React.createElement(Component, { ...props, key: id });
+    })}
   </div>
 );
 

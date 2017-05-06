@@ -12,23 +12,23 @@ const styles = StyleSheet.create({
     color: 'teal',
     ':hover': {
       color: 'peru',
-    }
-  }
+    },
+  },
 });
 
 const Teaser = ({ children }) => {
   return (
     <ul className={css(styles.container)}>
-      {
-        children.map(({ title, description, reference }) => (
-          <li key={hash(title+description+reference)}>
-            <h2><a href={reference} className={css(styles.blockHeader)}>{title}</a></h2>
-            <p>{description}</p>
-          </li>
-        ))
-      }
+      {children.map(({ title, description, reference }) => (
+        <li key={hash(title + description + reference)}>
+          <h2>
+            <a href={reference} className={css(styles.blockHeader)}>{title}</a>
+          </h2>
+          <p>{description}</p>
+        </li>
+      ))}
     </ul>
-  )
+  );
 };
 
 Teaser.propTypes = {
@@ -37,7 +37,7 @@ Teaser.propTypes = {
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       reference: PropTypes.string.isRequired,
-    }),
+    })
   ),
 };
 

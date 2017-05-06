@@ -127,17 +127,18 @@ describe('page actions', () => {
 
 describe('page reducer', () => {
   test('should return the initial state', () => {
-    expect(
-      reducer(undefined, {})
-    ).toEqual({})
+    expect(reducer(undefined, {})).toEqual({});
   });
 
   test('should handle PAGE_INIT', () => {
     expect(
-      reducer({}, {
-        type: PAGE_INIT,
-        page: INPUT_PAGE,
-      })
+      reducer(
+        {},
+        {
+          type: PAGE_INIT,
+          page: INPUT_PAGE,
+        }
+      )
     ).toEqual(
       expect.objectContaining({
         foo: 'bar',
@@ -146,8 +147,8 @@ describe('page reducer', () => {
             id: expect.any(String),
             props: {
               baz: 'qux',
-            }
-          })
+            },
+          }),
         ]),
       })
     );
@@ -155,10 +156,13 @@ describe('page reducer', () => {
 
   test('should handle PAGE_INIT with malformed object', () => {
     expect(
-      reducer({}, {
-        type: PAGE_INIT,
-        page: OBJECT,
-      })
+      reducer(
+        {},
+        {
+          type: PAGE_INIT,
+          page: OBJECT,
+        }
+      )
     ).toEqual(
       expect.objectContaining({
         foo: 'bar',
@@ -183,7 +187,7 @@ describe('page reducer', () => {
             qux: 'baz',
           },
         },
-      ]
+      ],
     });
   });
 
@@ -194,7 +198,7 @@ describe('page reducer', () => {
         id: '6789',
         props: {
           qux: 'new baz',
-          newProp: 'foobar'
+          newProp: 'foobar',
         },
       })
     ).toEqual({
@@ -205,9 +209,9 @@ describe('page reducer', () => {
           props: {
             qux: 'new baz',
             newProp: 'foobar',
-          }
+          },
         },
-      ]
+      ],
     });
   });
 
@@ -219,7 +223,7 @@ describe('page reducer', () => {
         block: {
           props: {
             qux: 'foo',
-          }
+          },
         },
       })
     ).toEqual({
@@ -248,7 +252,7 @@ describe('page reducer', () => {
         block: {
           props: {
             qux: 'foo',
-          }
+          },
         },
       })
     ).toEqual({
@@ -365,5 +369,4 @@ describe('page reducer', () => {
       ],
     });
   });
-
 });

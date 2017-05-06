@@ -6,9 +6,9 @@ const root = document.getElementById('root');
 const FRONTEND_BASE_URL = 'http://localhost:3000';
 
 if (pathName === '/') {
-    renderSitemap(root, FRONTEND_BASE_URL);
+  renderSitemap(root, FRONTEND_BASE_URL);
 } else if (pathName.startsWith('/editor/')) {
-    renderEditor(root);
+  renderEditor(root);
 } else {
-    window.location.pathname = '/';
+  window.location.pathname = '/';
 }
