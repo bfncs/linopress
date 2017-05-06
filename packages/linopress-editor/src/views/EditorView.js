@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import 'json-editor'; /* global JSONEditor */
 import { setFetching, setPage } from '../redux/pages';
 import { setSchema } from '../redux/schema';
-
-JSONEditor.defaults.theme = 'foundation5';
-JSONEditor.defaults.iconlib = 'fontawesome4';
+import Editor from '../components/Editor';
 
 function saveContentPage(path, page) {
   const options = {
@@ -30,9 +27,6 @@ class EditorView extends Component {
     setSchema: PropTypes.func.isRequired,
   };
 
-  editorInstance = null;
-  editorContainer = null;
-
   fetchPageContent(contentPath) {
     this.props.setFetching();
     fetch(`/api/content${contentPath}index.json`)
@@ -51,6 +45,7 @@ class EditorView extends Component {
       .then(res => res.json())
       .then(this.props.setSchema)
       .catch(err => console.error(`Unable to get schema from API".`, err));
+
     this.fetchPageContent(this.props.contentPath);
   }
 
@@ -58,44 +53,15 @@ class EditorView extends Component {
     if (this.props.contentPath !== nextProps.contentPath) {
       this.fetchPageContent(nextProps.contentPath);
     }
-
-    const schemaChanged = this.props.schema !== nextProps.schema;
-    const contentChanged = this.props.pageContent !== nextProps.pageContent;
-    if (
-      nextProps.schema &&
-      nextProps.pageContent &&
-      (schemaChanged || contentChanged)
-    ) {
-      if (this.editorInstance) {
-        this.editorInstance.destroy();
-      }
-      this.editorInstance = new JSONEditor(this.editorContainer, {
-        schema: nextProps.schema,
-        startval: nextProps.pageContent,
-        disable_collapse: true,
-        disable_edit_json: true,
-        disable_properties: true,
-        no_additional_properties: true,
-      });
-      this.editorInstance.on('change', () => {
-        saveContentPage(this.props.contentPath, this.editorInstance.getValue());
-      });
-    }
   }
 
   render() {
     return (
-      <div>
-        <div
-          ref={input => {
-            this.editorContainer = input;
-          }}
-        />
-        <div>
-          <button className={'button'} type={'button'}>save</button>
-          <a href="/" className={'button secondary'}>back</a>
-        </div>
-      </div>
+      <Editor
+        savePage={content => saveContentPage(this.props.contentPath, content)}
+        schema={this.props.schema}
+        content={this.props.pageContent}
+      />
     );
   }
 }

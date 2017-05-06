@@ -12,7 +12,6 @@ const getContentPath = pathName => {
 const App = () => {
   const path = window.location.pathname;
   const contentPath = getContentPath(path);
-  console.log({ contentPath });
   if (path === '/') {
     return <SitemapView baseUrl={FRONTEND_BASE_URL} />;
   } else if (path.startsWith('/editor/')) {
