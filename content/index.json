@@ -1,12 +1,12 @@
 {
-  "title": "sipgate Developer",
-  "description": "Integrate telephony into everything!",
+  "title": "Linopress ",
+  "description": "Linopress is a static site generator based on React components and JSON Schema with a local GUI to make editing easy.",
   "children": [
     {
       "type": "stage",
       "props": {
-        "title": "sipgate Developer",
-        "description": "Integrate telephony into everything!"
+        "title": "Linopress",
+        "description": "Linopress is a static site generator based on React components and JSON Schema with a local GUI to make editing easy."
       }
     },
     {
@@ -14,14 +14,14 @@
       "props": {
         "children": [
           {
-            "title": "Push API",
-            "description": "sipgate.io passes call meta data to your web server in real-time. Check out the official documentation.",
-            "reference": "https://www.sipgate.io/en/documentation"
+            "title": "React",
+            "description": "React is a JavaScript library for building user interfaces",
+            "reference": "https://facebook.github.io/react/"
           },
           {
-            "title": "REST API",
-            "description": "We build our applications using this API and we invite you to use it too. Check out our Endpoint Reference.",
-            "reference": "https://api.sipgate.com/doc/"
+            "title": "JSON Schema",
+            "description": "JSON Schema is a vocabulary that allows you to annotate and validate JSON documents.",
+            "reference": "http://json-schema.org/"
           }
         ]
       }
