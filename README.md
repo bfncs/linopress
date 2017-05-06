@@ -27,7 +27,6 @@ Run `npm run build` to build a statically deployable rendering of your website i
 
 ## Roadmap
 
-* Port editor to react application
 * Split actual content from generator, API and editor
 * Editor can revert changes (using a temporary file that has to be explicitly commited)
 * I18N of content
