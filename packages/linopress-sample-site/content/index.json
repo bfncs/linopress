@@ -1,5 +1,5 @@
 {
-  "title": "Linopress ",
+  "title": "Linopress",
   "description": "Linopress is a static site generator based on React components and JSON Schema with a local GUI to make editing easy.",
   "children": [
     {

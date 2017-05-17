@@ -9,7 +9,9 @@ const generateSitemap = require('./lib/generateSitemap');
 const app = express();
 const jsonParser = bodyParser.json();
 
-const contentBasePath = path.resolve(__dirname + '/../../../content/');
+const contentBasePath = path.resolve(
+  __dirname + '/../../linopress-sample-site/content'
+);
 
 const includesDirectoryTraversal = pathString =>
   pathString !== path.normalize(pathString);

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { init } from './redux/page';
-import Page from './components/Page';
+import Page from 'components/Page';
 
 const POLLING_INTERVAL_MS = 1000;
 
