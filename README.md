@@ -27,7 +27,6 @@ Run `npm run build` to build a statically deployable rendering of your website i
 
 ## TODO
 
-* Site path structure is generated from actual source directory
 * Generator can be run in any directory from npm script
 * Make ports configurable
 * Editor can revert changes (using a temporary file that has to be explicitly commited)

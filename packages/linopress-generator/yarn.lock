@@ -2349,6 +2349,12 @@ fs-extra@0.30.0, fs-extra@^0.30.0:
     path-is-absolute "^1.0.0"
     rimraf "^2.2.8"
 
+fs-jetpack@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/fs-jetpack/-/fs-jetpack-1.0.0.tgz#82d6a98fcd992b0a1ea7b5268272481bf5f6545c"
+  dependencies:
+    minimatch "^3.0.2"
+
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"

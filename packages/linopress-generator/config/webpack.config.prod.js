@@ -8,28 +8,33 @@ var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
 var StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-
-// @TODO: Load content programmatically by recursively reading directory
-const content = {
-  '/': require('../../linopress-sample-site/content/index.json'),
-  '/other': require('../../linopress-sample-site/content/other/index.json'),
-};
+var jetPack = require('fs-jetpack');
+var generateFlatSitemap = require('./generateFlatSitemap');
 
 // TODO: dynamic content path
-const contentSrc = path.resolve(
+const contentBase = path.resolve(
   __dirname,
   '..',
   '..',
-  'linopress-sample-site',
-  'src'
+  'linopress-sample-site'
 );
-const contentModules = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  'linopress-sample-site',
-  'node_modules'
-);
+const targetSrc = path.resolve(contentBase, 'src');
+const targetContent = path.resolve(contentBase, 'content');
+const targetModules = path.resolve(contentBase, 'node_modules');
+
+const contentTree = jetPack.inspectTree(targetContent, { relativePath: true });
+const content = Object.entries(generateFlatSitemap(contentTree))
+  .reduce(
+    (acc, item) => {
+      const name = item[0];
+      const relativePath = item[1];
+      return Object.assign(
+        acc,
+        { [name]: require(path.resolve(targetContent, relativePath)) }
+      )
+    },
+    {}
+  );
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -88,9 +93,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.json', '.jsx', ''],
-    root: [contentSrc, path.resolve(__dirname, '..', 'src')],
+    root: [targetSrc, path.resolve(__dirname, '..', 'src')],
     modulesDirectories: [
-      contentModules,
+      targetModules,
       path.resolve(__dirname, '..', 'node_modules'),
     ],
   },
@@ -127,7 +132,7 @@ module.exports = {
       // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
-        include: [paths.appSrc, contentSrc],
+        include: [paths.appSrc, targetSrc],
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
       },
