@@ -25,9 +25,11 @@ All content changes will be persisted to your filesystem in `content/`. If you w
 Run `npm run build` to build a statically deployable rendering of your website into `build/`. 
 
 
-## Roadmap
+## TODO
 
-* Split actual content from generator, API and editor
+* Site path structure is generated from actual source directory
+* Generator can be run in any directory from npm script
+* Make ports configurable
 * Editor can revert changes (using a temporary file that has to be explicitly commited)
 * I18N of content
 * Frontend uses websockets to listen for change messages instead of polling
