@@ -66,7 +66,7 @@
     "start": "concurrently --kill-others \"node scripts/start.js\" \"npm run start --prefix ../linopress-api\" \"npm run start --prefix ../linopress-editor\"",
     "start:dev": "concurrently --kill-others \"node scripts/start.js\" \"npm run start:dev --prefix ../linopress-api\" \"npm run start --prefix ../linopress-editor\"",
     "frontend": "node scripts/start.js",
-    "build": "node scripts/build.js && mkdir -p ./build/api && cp -r ./content ./build/api/",
+    "build": "node scripts/build.js && mkdir -p ./build/api && cp -r ../linopress-sample-site/content ./build/api/",
     "test": "node scripts/test.js --env=jsdom",
     "format": "prettier --single-quote --trailing-comma es5 --write \"{src,packages/linopress-api/src,packages/linopress-editor/src}/**/*.js\"",
     "postinstall": "npm install --prefix packages/linopress-api && npm install --prefix packages/linopress-editor",
