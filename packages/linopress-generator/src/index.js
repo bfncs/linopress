@@ -8,9 +8,10 @@ import { Provider } from 'react-redux';
 import rootReducer from './redux/rootReducer';
 import HtmlWrapper from './components/HtmlWrapper';
 import Frontend from './FrontendApp';
+import Editor from './editor/Editor';
 import './index.css';
 
-const createApp = (Component, preloadedState) => {
+const createApp = (Component, preloadedState = {}) => {
   const store = createStore(rootReducer, preloadedState);
   return (
     <Provider store={store}>
@@ -22,13 +23,17 @@ const createApp = (Component, preloadedState) => {
 const renderApp = app => ReactDOM.render(app, document.getElementById('root'));
 
 if (typeof document !== 'undefined') {
-  StyleSheet.rehydrate(window.__PRELOADED_STYLES__);
-  delete window.__PRELOADED_STYLES__;
+  if (window.location.pathname.startsWith('/editor')) {
+    renderApp(createApp(Editor));
+  } else {
+    StyleSheet.rehydrate(window.__PRELOADED_STYLES__);
+    delete window.__PRELOADED_STYLES__;
 
-  const preloadedState = window.__PRELOADED_STATE__;
-  delete window.__PRELOADED_STATE__;
+    const preloadedState = window.__PRELOADED_STATE__;
+    delete window.__PRELOADED_STATE__;
 
-  renderApp(createApp(Frontend, preloadedState));
+    renderApp(createApp(Frontend, preloadedState));
+  }
 }
 
 export default (locals, callback) => {

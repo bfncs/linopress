@@ -53,7 +53,10 @@
   },
   "dependencies": {
     "aphrodite": "^1.1.0",
+    "font-awesome": "^4.7.0",
+    "foundation-sites": "^5.0.2",
     "fs-jetpack": "^1.0.0",
+    "json-editor": "^0.7.28",
     "material-ui": "^0.17.0",
     "murmurhash": "0.0.2",
     "react": "^15.4.2",
@@ -64,8 +67,8 @@
     "redux": "^3.6.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"node scripts/start.js\" \"npm run start --prefix ../linopress-api\" \"npm run start --prefix ../linopress-editor\"",
-    "start:dev": "concurrently --kill-others \"node scripts/start.js\" \"npm run start:dev --prefix ../linopress-api\" \"npm run start --prefix ../linopress-editor\"",
+    "start": "concurrently --kill-others \"node scripts/start.js\" \"npm run start --prefix ../linopress-api\"",
+    "start:dev": "concurrently --kill-others \"node scripts/start.js\" \"npm run start:dev --prefix ../linopress-api\"",
     "frontend": "node scripts/start.js",
     "build": "node scripts/build.js && mkdir -p ./build/api && cp -r ../linopress-sample-site/content ./build/api/",
     "test": "node scripts/test.js --env=jsdom",

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setFetching, setPage } from '../redux/pages';
-import { setSchema } from '../redux/schema';
+import { setFetching, setPage } from '../../redux/pages';
+import { setSchema } from '../../redux/schema';
 import Editor from '../components/Editor';
 
 function saveContentPage(path, page) {
@@ -29,7 +29,8 @@ class EditorView extends Component {
 
   fetchPageContent(contentPath) {
     this.props.setFetching();
-    fetch(`/api/content${contentPath}index.json`)
+    const path = contentPath.replace(/\/+$/, '');
+    fetch(`/api/content${path}/index.json`)
       .then(res => res.json())
       .then(page => this.props.setPage(contentPath, page))
       .catch(err => {

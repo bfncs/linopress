@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { initSitemap } from '../redux/sitemap';
+import { initSitemap } from '../../redux/sitemap';
 import SitemapNode from '../components/SitemapNode';
 
 class SiteMapView extends Component {

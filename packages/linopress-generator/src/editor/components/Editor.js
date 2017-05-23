@@ -50,7 +50,7 @@ class Editor extends Component {
         />
         <div>
           <button className={'button'} type={'button'}>save</button>
-          <a href="/" className={'button secondary'}>back</a>
+          <a href="/editor" className={'button secondary'}>back</a>
         </div>
       </div>
     );
