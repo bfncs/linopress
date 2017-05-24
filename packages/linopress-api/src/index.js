@@ -4,14 +4,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mkdirp = require('mkdirp');
 const jetpack = require('fs-jetpack');
+const commander = require('commander');
 const generateSitemap = require('./lib/generateSitemap');
+
+const sanitizePath = (inputPath) => (
+  path.isAbsolute(inputPath)
+    ? inputPath
+    : path.resolve(inputPath)
+);
+
+const { dir, port } = commander
+  .option('-d, --dir [value]', 'content directory', sanitizePath, process.cwd())
+  .option('-p, --port <value>', 'content directory', (port) => parseInt(port), 3001)
+  .parse(process.argv);
+const contentBasePath = path.resolve(dir, 'content');
 
 const app = express();
 const jsonParser = bodyParser.json();
-
-const contentBasePath = path.resolve(
-  __dirname + '/../../linopress-sample-site/content'
-);
 
 const includesDirectoryTraversal = pathString =>
   pathString !== path.normalize(pathString);
@@ -90,4 +99,5 @@ app.use((err, req, res, next) => {
   res.status(500).send();
 });
 
-app.listen(3001);
+console.log(`starting api on port ${port}`);
+app.listen(port);

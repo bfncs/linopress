@@ -10,7 +10,13 @@ const SitemapNode = ({ sitemap, baseUrl, parentPath = '' }) => (
           {item.name}
           {item.isNode &&
             <span>
-              <a href={`${baseUrl}${itemPath}`} target="_blank">👁</a>
+              <a
+                href={`${baseUrl}${itemPath}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                👁
+              </a>
               <a href={`/editor?site=${itemPath}`}>🖉</a>
             </span>}
           {item.children &&
