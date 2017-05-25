@@ -1,7 +1,7 @@
 {
   "name": "linopress",
   "description": "Static site generator with GUI, React components and JSON Schema",
-  "version": "0.0.1-0",
+  "version": "0.0.1",
   "author": "Marc Löhe <marc@marcloehe.de",
   "license": "MIT",
   "repository": "bfncs/linopress",

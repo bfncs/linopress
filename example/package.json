@@ -7,7 +7,7 @@
     "build": "linopress build"
   },
   "devDependencies": {
-    "linopress": "^0.0.1-0"
+    "linopress": "^0.0.1"
   },
   "dependencies": {
     "babel-eslint": "^7.2.3",
