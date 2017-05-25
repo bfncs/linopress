@@ -7,10 +7,21 @@
     "build": "linopress build"
   },
   "devDependencies": {
-    "linopress": "../"
+    "linopress": "^0.0.1-0"
   },
   "dependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0",
+    "eslint-config-react-app": "^1.0.4",
     "prop-types": "^15.5.10",
     "react": "^15.5.4"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
   }
 }
