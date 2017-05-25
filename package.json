@@ -1,11 +1,27 @@
 {
   "name": "linopress",
+  "description": "Static site generator with GUI, React components and JSON Schema",
   "version": "0.0.1-0",
-  "private": true,
+  "author": "Marc Löhe <marc@marcloehe.de",
+  "license": "MIT",
+  "repository": "bfncs/linopress",
   "bin": {
     "linopress": "scripts/linopress",
     "linopress-start": "scripts/linopress-start",
     "linopress-build": "scripts/linopress-build"
+  },
+  "files": [
+    "config",
+    "public",
+    "scripts",
+    "src"
+  ],
+  "scripts": {
+    "start": "./scripts/linopress start",
+    "build": "./scripts/linopress build",
+    "test": "node scripts/test.js --env=jsdom",
+    "format": "prettier --single-quote --trailing-comma es5 --write \"{src,packages/*/src}/**/*.js\"",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "aphrodite": "^1.1.0",
@@ -74,13 +90,6 @@
     "jest": "18.1.0",
     "lint-staged": "^3.4.1",
     "prettier": "^1.3.1"
-  },
-  "scripts": {
-    "start": "./scripts/linopress start",
-    "build": "./scripts/linopress build",
-    "test": "node scripts/test.js --env=jsdom",
-    "format": "prettier --single-quote --trailing-comma es5 --write \"{src,packages/*/src}/**/*.js\"",
-    "precommit": "lint-staged"
   },
   "proxy": "http://localhost:3001",
   "jest": {
