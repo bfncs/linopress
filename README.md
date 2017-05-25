@@ -4,21 +4,15 @@ Linopress is a static site generator based on [React](https://facebook.github.io
 
 ⚠ Use only with a truckload of salt, this is just an exploration of the concepts and utterly rough around the edges.
 
-## Install
+## Start a new project
 
-Checkout this repository and install node dependencies:
-
-```
-git clone git@github.com:bfncs/linopress.git
-cd linopress
-npm install
-```
+To get started quickly, copy the files in `/example` to a new directory and install dependencies using `npm install`.
 
 ## Edit
 
-To start editing start up all components with `npm start`. This will fire up frontend and editor in your browser.
+To start editing start up editing mode with `npm start`. This will fire up the frontend at [`localhost:3000`](http://localhost:3000) in your browser. You can now start using the editing interface at [`localhost:3000/editor`](http://localhost:3000/editor). 
 
-All content changes will be persisted to your filesystem in `content/`. If you want to edit react components or add new ones, do this in `src/components/` and change the JSON schema for the editor in `packages/linopress-api/schema.json` if needed.
+All content changes will be persisted to your filesystem in `content/`. If you want to edit react components or add new ones, do this in your project folder in `src/components/` and change the JSON schema for the editor in `src/api/schema.json` if needed.
 
 ## Build
 
@@ -27,6 +21,7 @@ Run `npm run build` to build a statically deployable rendering of your website i
 
 ## TODO
 
+* Use `schema.json` from project folder
 * Make ports configurable
 * Editor can revert changes (using a temporary file that has to be explicitly commited)
 * I18N of content
