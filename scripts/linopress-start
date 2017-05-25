@@ -287,6 +287,7 @@ function runApiServer() {
       path.resolve(paths.apiSrc, 'index.js'),
       `--dir=${dir}`,
       `--port=${API_PORT}`,
+      paths.contentSchemaJson,
     ]
   );
   api.stdout.on('data', (data) => {

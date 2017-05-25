@@ -2,9 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const url = require('url');
 
-const appDirectory = fs.realpathSync(
-  path.resolve(__dirname, '..')
-);
+const appDirectory = fs.realpathSync(path.resolve(__dirname, '..'));
 
 function resolveApp(relativePath) {
   return path.resolve(appDirectory, relativePath);
@@ -61,7 +59,7 @@ function getServedPath(appPackageJson) {
   return ensureSlash(servedUrl, true);
 }
 
-module.exports = (contentBasePath) => ({
+module.exports = contentBasePath => ({
   appBuild: path.resolve(contentBasePath, 'build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
@@ -70,6 +68,7 @@ module.exports = (contentBasePath) => ({
   appSrc: resolveApp('src'),
   apiSrc: resolveApp('src/api'),
   contentSrc: path.resolve(contentBasePath, 'src'),
+  contentSchemaJson: path.resolve(contentBasePath, 'schema.json'),
   contentIndexJs: path.resolve(contentBasePath, 'src/index.js'),
   contentPayload: path.resolve(contentBasePath, 'content'),
   contentNodeModules: path.resolve(contentBasePath, 'node_modules'),

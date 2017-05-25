@@ -10,7 +10,8 @@ const generateSitemap = require('./lib/generateSitemap');
 const sanitizePath = inputPath =>
   path.isAbsolute(inputPath) ? inputPath : path.resolve(inputPath);
 
-const { dir, port } = commander
+const program = commander
+  .usage('[options] <schema>')
   .option(
     '-d, --dir [value]',
     'content base directory',
@@ -24,7 +25,23 @@ const { dir, port } = commander
     3001
   )
   .parse(process.argv);
+const { dir, port, args: [schema] = [] } = program;
+
+if (!schema) {
+  console.error('You did not provide a schema.');
+  program.outputHelp();
+  process.exit(1);
+}
+
 const contentBasePath = path.resolve(dir, 'content');
+const schemaPath = path.resolve(schema);
+
+try {
+  fs.accessSync(schemaPath, 'r');
+} catch (err) {
+  console.error(`Unable to read provided schema.json from "${schemaPath}".`);
+  process.exit(1);
+}
 
 const app = express();
 const jsonParser = bodyParser.json();
@@ -86,7 +103,7 @@ app.post('/api/content*', jsonParser, (req, res) => {
 });
 
 app.get('/api/schema', (req, res) => {
-  res.sendFile(path.resolve(`${__dirname}/schema.json`));
+  res.sendFile(schemaPath);
 });
 
 app.get('/api/sitemap', (req, res) => {
