@@ -1,10 +1,11 @@
-var path = require('path');
-var fs = require('fs');
-var url = require('url');
+const path = require('path');
+const fs = require('fs');
+const url = require('url');
 
-// Make sure any symlinks in the project folder are resolved:
-// https://github.com/facebookincubator/create-react-app/issues/637
-var appDirectory = fs.realpathSync(process.cwd());
+const appDirectory = fs.realpathSync(
+  path.resolve(__dirname, '..')
+);
+
 function resolveApp(relativePath) {
   return path.resolve(appDirectory, relativePath);
 }
@@ -60,14 +61,18 @@ function getServedPath(appPackageJson) {
   return ensureSlash(servedUrl, true);
 }
 
-// config after eject: we're in ./config/
-module.exports = {
-  appBuild: resolveApp('build'),
+module.exports = (contentBasePath) => ({
+  appBuild: path.resolve(contentBasePath, 'build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
   appIndexJs: resolveApp('src/index.js'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
+  apiSrc: resolveApp('src/api'),
+  contentSrc: path.resolve(contentBasePath, 'src'),
+  contentIndexJs: path.resolve(contentBasePath, 'src/index.js'),
+  contentPayload: path.resolve(contentBasePath, 'content'),
+  contentNodeModules: path.resolve(contentBasePath, 'node_modules'),
   yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveApp('src/setupTests.js'),
   appNodeModules: resolveApp('node_modules'),
@@ -75,4 +80,4 @@ module.exports = {
   nodePaths: nodePaths,
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
-};
+});

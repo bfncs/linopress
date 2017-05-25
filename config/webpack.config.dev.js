@@ -1,18 +1,13 @@
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-var getClientEnvironment = require('./env');
-var path = require('path');
-var paths = require('./paths');
+const path = require('path');
+const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const getClientEnvironment = require('./env');
 
-module.exports = (contentBasePath) => {
-  const contentSrc = path.resolve(contentBasePath, 'src');
-  const contentModules = path.resolve(contentBasePath, 'node_modules');
-
+module.exports = (paths) => {
   const publicPath = '/';
   const publicUrl = '';
   const env = getClientEnvironment(publicUrl);
@@ -31,21 +26,21 @@ module.exports = (contentBasePath) => {
     },
     resolve: {
       extensions: ['.js', '.json', '.jsx', ''],
-      root: [contentSrc, path.resolve(__dirname, '..', 'src')],
+      root: [paths.contentSrc, paths.appSrc],
       modulesDirectories: [
-        contentModules,
-        path.resolve(__dirname, '..', 'node_modules'),
+        paths.contentNodeModules,
+        paths.appNodeModules
       ],
     },
     resolveLoader: {
-      fallback: path.resolve(__dirname, '..', 'node_modules')
+      fallback: paths.appNodeModules,
     },
     module: {
       preLoaders: [
         {
           test: /\.(js|jsx)$/,
           loader: 'eslint',
-          include: paths.appSrc,
+          include: paths.contentSrc,
         },
       ],
       loaders: [
@@ -59,7 +54,7 @@ module.exports = (contentBasePath) => {
         },
         {
           test: /\.(js|jsx)$/,
-          exclude: /(node_modules|bower_components)/,
+          include: [paths.contentSrc, paths.appSrc],
           loader: 'babel',
           query: {
             cacheDirectory: true,

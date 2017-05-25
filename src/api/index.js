@@ -7,15 +7,22 @@ const jetpack = require('fs-jetpack');
 const commander = require('commander');
 const generateSitemap = require('./lib/generateSitemap');
 
-const sanitizePath = (inputPath) => (
-  path.isAbsolute(inputPath)
-    ? inputPath
-    : path.resolve(inputPath)
-);
+const sanitizePath = inputPath =>
+  path.isAbsolute(inputPath) ? inputPath : path.resolve(inputPath);
 
 const { dir, port } = commander
-  .option('-d, --dir [value]', 'content directory', sanitizePath, process.cwd())
-  .option('-p, --port <value>', 'content directory', (port) => parseInt(port), 3001)
+  .option(
+    '-d, --dir [value]',
+    'content base directory',
+    sanitizePath,
+    process.cwd()
+  )
+  .option(
+    '-p, --port <value>',
+    'content directory',
+    port => parseInt(port),
+    3001
+  )
   .parse(process.argv);
 const contentBasePath = path.resolve(dir, 'content');
 

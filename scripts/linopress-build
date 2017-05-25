@@ -17,29 +17,26 @@ const filesize = require('filesize');
 const gzipSize = require('gzip-size').sync;
 const webpack = require('webpack');
 const createConfig = require('../config/webpack.config.prod');
-const paths = require('../config/paths');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const recursive = require('recursive-readdir');
 const stripAnsi = require('strip-ansi');
 const commander = require('commander');
+const getPaths = require('../config/paths');
 
-const useYarn = fs.existsSync(paths.yarnLockFile);
 
 const { dir } = commander
   .option('-d, --dir [value]', 'content directory', (arg) => path.resolve(arg) , process.cwd())
   .parse(process.argv);
-const config = createConfig(dir);
 
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-  process.exit(1);
-}
+const buildPath = path.resolve(dir, 'build');
 
+const paths = getPaths(dir);
+const config = createConfig(paths);
+const useYarn = fs.existsSync(paths.yarnLockFile);
 // Input: /User/dan/app/build/static/js/main.82be8.js
 // Output: /static/js/main.js
 function removeFileNameHash(fileName) {
   return fileName
-    .replace(paths.appBuild, '')
+    .replace(buildPath, '')
     .replace(/\/?(.*)(\.\w+)(\.js|\.css)/, (match, p1, p2, p3) => p1 + p3);
 }
 
@@ -62,7 +59,7 @@ function getDifferenceLabel(currentSize, previousSize) {
 
 // First, read the current file sizes in build directory.
 // This lets us display how much they changed later.
-recursive(paths.appBuild, (err, fileNames) => {
+recursive(buildPath, (err, fileNames) => {
   var previousSizeMap = (fileNames || [])
     .filter(fileName => /\.(js|css)$/.test(fileName))
     .reduce((memo, fileName) => {
@@ -74,7 +71,7 @@ recursive(paths.appBuild, (err, fileNames) => {
 
   // Remove all content but keep the directory so that
   // if you're in it, you don't end up in Trash
-  fs.emptyDirSync(paths.appBuild);
+  fs.emptyDirSync(buildPath);
 
   // Start the webpack build
   build(previousSizeMap);
@@ -89,7 +86,7 @@ function printFileSizes(stats, previousSizeMap) {
     .toJson()
     .assets.filter(asset => /\.(js|css)$/.test(asset.name))
     .map(asset => {
-      var fileContents = fs.readFileSync(paths.appBuild + '/' + asset.name);
+      var fileContents = fs.readFileSync(buildPath + '/' + asset.name);
       var size = gzipSize(fileContents);
       var previousSize = previousSizeMap[removeFileNameHash(asset.name)];
       var difference = getDifferenceLabel(size, previousSize);
@@ -299,7 +296,7 @@ function build(previousSizeMap) {
 }
 
 function copyPublicFolder() {
-  fs.copySync(paths.appPublic, paths.appBuild, {
+  fs.copySync(paths.appPublic, buildPath, {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });

@@ -5,19 +5,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const url = require('url');
-const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
 const jetPack = require('fs-jetpack');
 const generateFlatSitemap = require('./generateFlatSitemap');
 
-module.exports = (contentBase) => {
-  const contentSrc = path.resolve(contentBase, 'src');
-  const contentPayload = path.resolve(contentBase, 'content');
-  const contentModules = path.resolve(contentBase, 'node_modules');
-
-  const contentTree = jetPack.inspectTree(contentPayload, { relativePath: true });
+module.exports = (paths) => {
+  const contentTree = jetPack.inspectTree(paths.contentPayload, { relativePath: true });
   const content = Object.entries(generateFlatSitemap(contentTree))
     .reduce(
       (acc, item) => {
@@ -25,7 +19,7 @@ module.exports = (contentBase) => {
         const relativePath = item[1];
         return Object.assign(
           acc,
-          { [name]: require(path.resolve(contentPayload, relativePath)) }
+          { [name]: require(path.resolve(paths.contentPayload, relativePath)) }
         )
       },
       {}
@@ -80,14 +74,14 @@ module.exports = (contentBase) => {
     },
     resolve: {
       extensions: ['.js', '.json', '.jsx', ''],
-      root: [contentSrc, path.resolve(__dirname, '..', 'src')],
+      root: [paths.contentSrc, paths.appSrc],
       modulesDirectories: [
-        contentModules,
-        path.resolve(__dirname, '..', 'node_modules'),
+        paths.contentNodeModules,
+        paths.appNodeModules,
       ],
     },
     resolveLoader: {
-      fallback: path.resolve(__dirname, '..', 'node_modules')
+      fallback: paths.appNodeModules,
     },
     module: {
       // First, run the linter.
@@ -96,7 +90,7 @@ module.exports = (contentBase) => {
         {
           test: /\.(js|jsx)$/,
           loader: 'eslint',
-          include: paths.appSrc,
+          include: paths.contentSrc,
         },
       ],
       loaders: [
@@ -119,8 +113,7 @@ module.exports = (contentBase) => {
         // Process JS with Babel.
         {
           test: /\.(js|jsx)$/,
-          include: [paths.appSrc, contentSrc],
-          exclude: /(node_modules|bower_components)/,
+          include: [paths.contentSrc, paths.appSrc],
           loader: 'babel',
         },
         // The notation here is somewhat confusing.
@@ -223,7 +216,7 @@ module.exports = (contentBase) => {
         fileName: 'asset-manifest.json',
       }),
       new CopyWebpackPlugin([{
-        from: contentPayload,
+        from: paths.contentPayload,
         to: 'api/content',
       }])
     ],

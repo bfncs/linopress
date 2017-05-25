@@ -1,0 +1,16 @@
+{
+  "name": "linopress-example-site",
+  "version": "0.0.1-0",
+  "private": true,
+  "scripts": {
+    "start": "linopress start",
+    "build": "linopress build"
+  },
+  "devDependencies": {
+    "linopress": "../"
+  },
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4"
+  }
+}

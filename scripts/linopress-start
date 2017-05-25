@@ -13,30 +13,25 @@ const historyApiFallback = require('connect-history-api-fallback');
 const httpProxyMiddleware = require('http-proxy-middleware');
 const detect = require('detect-port');
 const clearConsole = require('react-dev-utils/clearConsole');
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const getProcessForPort = require('react-dev-utils/getProcessForPort');
 const openBrowser = require('react-dev-utils/openBrowser');
 const prompt = require('react-dev-utils/prompt');
 const fs = require('fs');
 const createConfig = require('../config/webpack.config.dev');
-const paths = require('../config/paths');
-
-const useYarn = fs.existsSync(paths.yarnLockFile);
-const cli = useYarn ? 'yarn' : 'npm';
-const isInteractive = process.stdout.isTTY;
-const API_PORT = 3001;
+const getPaths = require('../config/paths');
 
 const { dir } = commander
   .option('-d, --dir [value]', 'content directory', (arg) => path.resolve(arg) , process.cwd())
   .parse(process.argv);
 
-const config = createConfig(dir);
+const paths = getPaths(dir);
+const config = createConfig(paths);
 
-// Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-  process.exit(1);
-}
+const useYarn = fs.existsSync(paths.yarnLockFile);
+const cli = useYarn ? 'yarn' : 'npm';
+const isInteractive = process.stdout.isTTY;
+const API_PORT = 3001;
 
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT = process.env.PORT || 3000;
@@ -289,7 +284,7 @@ function runApiServer() {
   const api = spawn(
     'node',
     [
-      path.resolve(__dirname, '..', 'packages', 'linopress-api', 'src', 'index.js'),
+      path.resolve(paths.apiSrc, 'index.js'),
       `--dir=${dir}`,
       `--port=${API_PORT}`,
     ]
